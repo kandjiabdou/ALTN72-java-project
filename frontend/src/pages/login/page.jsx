@@ -1,46 +1,63 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+/* eslint-disable react/no-unescaped-entities */
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 
 const LoginPage = () => {
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    try {
+      fetch(`${import.meta.env.VITE_API_URL}/users/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }).then((response) => {
+        if (response.ok) {
+          localStorage.setItem("token", response.headers.get("Authorization"));
+          window.location.href = "/";
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   return (
     <div className="flex justify-center items-center h-full">
       <Form name="login" onFinish={onFinish}>
         <Form.Item
-          name="username"
+          name="email"
           rules={[
             {
               required: true,
-              message: "Please input your Username!",
+              message: "Veuillez entrer un email !",
             },
           ]}
         >
-          <Input prefix={<UserOutlined />} placeholder="Username" />
+          <Input prefix={<MailOutlined />} placeholder="Email" />
         </Form.Item>
         <Form.Item
-          name="password"
+          name="motDePasse"
           rules={[
             {
               required: true,
-              message: "Please input your Password!",
+              message: "Veuillez entrer un mot de passe !",
             },
           ]}
         >
           <Input
             prefix={<LockOutlined />}
             type="password"
-            placeholder="Password"
+            placeholder="Mot de passe"
           />
         </Form.Item>
         <Form.Item>
           <Button block type="primary" htmlType="submit">
-            Log in
+            Se connecter
           </Button>
-          or
+          ou
           <Button type="link" href="">
-            Register now!
+            S'inscrire
           </Button>
         </Form.Item>
       </Form>

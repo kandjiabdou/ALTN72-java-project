@@ -9,6 +9,7 @@ import { useUser } from "../../../commons/hooks/auth";
 const data = [
   {
     key: 1,
+    id: 1,
     titre: "GitHub Global Campus (GitHub Education)",
     domaine: "Bouquet de services",
     description_simple: "Pack d'outils Github pour les étudiants",
@@ -25,6 +26,7 @@ f) Profiter des différentes offres incluses dans le programme`,
   },
   {
     key: 2,
+    id: 2,
     titre: "Coding Rooms",
     domaine: "Codage / Développement",
     description_simple: "Site web pour les exercices de programmation",
@@ -36,6 +38,7 @@ On peut ensuite accéder aux exercices et aux ressources du cours.`,
   },
   {
     key: 3,
+    id: 3,
     titre: "Nowledgeable",
     domaine: "Codage / Développement",
     description_simple: "Site web pour les exercices de programmation",
@@ -47,6 +50,7 @@ c) Un lien vous sera envoyé pour créer et activer un compte"`,
   },
   {
     key: 4,
+    id: 4,
     titre: "Jupyter notebook",
     domaine: "Codage / Développement",
     description_simple: "Application web pour le codage",
@@ -63,7 +67,24 @@ f) Profiter des différentes offres incluses dans le programme`,
   },
 ];
 const TableComponent = () => {
-  const { user } = useUser();
+  const handleDelete = (id) => {
+    try {
+      fetch(`${import.meta.env.VITE_API_URL}/ressources/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }).then((response) => {
+        if (response.ok) {
+          window.location.reload();
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const user = useUser();
 
   const columns = [
     {
@@ -89,17 +110,29 @@ const TableComponent = () => {
     },
     {
       title: "Action",
-      dataIndex: "",
-      key: "x",
-      render: () => (
+      dataIndex: "action",
+      key: "action",
+      render: (_, record) => (
         <div className="flex gap-2 items-center justify-center">
-          {user && (user.role === "etudiant" || user.role === "professeur") && (
-            <Button size="small" icon={<MessageOutlined />} />
-          )}
-          {user && user.role === "admin" && (
+          <Button
+            size="small"
+            icon={<MessageOutlined />}
+            href={`/ressource/${record.id}`}
+          />
+
+          {user && user.role === "administrateur" && (
             <>
-              <Button size="small" icon={<EditOutlined />} />
-              <Button size="small" danger icon={<DeleteOutlined />} />
+              <Button
+                size="small"
+                icon={<EditOutlined />}
+                href={`/ressource/edit/${record.id}`}
+              />
+              <Button
+                size="small"
+                danger
+                icon={<DeleteOutlined />}
+                onClick={() => handleDelete(record.id)}
+              />
             </>
           )}
         </div>

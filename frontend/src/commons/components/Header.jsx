@@ -1,20 +1,21 @@
 import { Button } from "antd";
-import routes from "../routes";
 import { useUser } from "../hooks/auth";
 import { logout } from "../hooks/auth";
 
 const Header = () => {
-  const { user } = useUser();
+  const user = useUser();
   return (
-    <header className="bg-gray-800 text-white p-4 flex justify-between">
-      <ul className="flex gap-2">
-        {routes.map((route) => {
-          return (
-            <li key={route.id}>
-              <Button href={route.path}>{route.name}</Button>
-            </li>
-          );
-        })}
+    <header className="bg-gray-800 text-white p-4 flex justify-between w-full">
+      <ul className="flex gap-4">
+        <li>
+          <Button href="/">Dashboard</Button>
+        </li>
+
+        {user && user.role === "administrateur" ? (
+          <li>
+            <Button href="/users">Utilisateurs</Button>
+          </li>
+        ) : null}
       </ul>
       <ul>
         {user ? (

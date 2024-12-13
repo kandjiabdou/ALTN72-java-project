@@ -1,5 +1,5 @@
 import { Select, Button } from "antd";
-import { ReloadOutlined } from "@ant-design/icons";
+import { ReloadOutlined, PlusOutlined } from "@ant-design/icons";
 import TableComponent from "./components/Table";
 
 const DashboardPage = () => {
@@ -7,6 +7,8 @@ const DashboardPage = () => {
     <div className="p-4 py-10 bg-gray-100 h-full flex flex-col gap-5">
       <h1 className="text-2xl font-bold text-center">Dashboard</h1>
       <div className="flex gap-2">
+        <Button href="/ressource/create" icon={<PlusOutlined />} />
+
         <Button icon={<ReloadOutlined />} />
         <Select placeholder="Filtrer par statut" style={{ width: 120 }}>
           <Select.Option value="valide">Validé</Select.Option>

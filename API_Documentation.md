@@ -27,20 +27,14 @@
   - Input Body:
   ```json
   {
-    "identifiant": "string",
+    "email": "string",
     "motDePasse": "string"
   }
   ```
   - Output Success (200):
   ```json
   {
-    "token": "string",
-    "utilisateur": {
-      "id": "number",
-      "prenom": "string",
-      "nom": "string",
-      "role": "string"
-    }
+    "token": "string"
   }
   ```
   - Cas de retour :
@@ -69,7 +63,7 @@
     - 200 OK : Profil récupéré
     - 401 Unauthorized : Token invalide
 
-- `POST /users/create` 🔒(administrateur) ⬇️
+- `POST /users/` 🔒(administrateur) ⬇️
 
   - Description : Création d'un nouvel utilisateur
   - Input Body:
