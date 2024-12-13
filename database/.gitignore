@@ -1,0 +1,26 @@
+# Ignore les fichiers et dossiers spécifiques à Docker
+.dockerignore
+docker-compose.override.yml
+*.log
+**/__pycache__/
+
+# Ignore les volumes Docker persistants
+volumes/
+mariadb_data/
+
+# Ignore les fichiers d'environnement sensibles
+.env
+.env.*
+
+# Ignore les fichiers générés par votre éditeur
+.vscode/
+.idea/
+*.iml
+
+# Ignore les fichiers système
+.DS_Store
+Thumbs.db
+
+# Ignore les fichiers de configuration spécifiques au système
+*.swp
+*.swo
