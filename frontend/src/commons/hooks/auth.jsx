@@ -18,10 +18,10 @@ const useUser = () => {
     setUser({
       prenom: "John",
       nom: "Doe",
-      role: "etudiant",
+      role: "administrateur",
     });
   }, []);
-  return { user };
+  return user;
 };
 
 const logout = () => {
