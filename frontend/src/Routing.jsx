@@ -10,13 +10,6 @@ const Routing = () => {
     <Routes>
       {routes.map((route) => {
         if (route.protected) {
-          console.log(
-            route.path +
-              " " +
-              user?.role +
-              " " +
-              route.roles.includes(user?.role)
-          );
           if (user && route.roles.includes(user.role)) {
             return (
               <Route

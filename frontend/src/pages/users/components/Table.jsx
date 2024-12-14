@@ -1,31 +1,8 @@
+/* eslint-disable react/prop-types */
 import { Table, Button } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-const data = [
-  {
-    key: "1",
-    prenom: "John",
-    nom: "Doe",
-    email: "johndoe@gmail.com",
-    role: "admin",
-  },
-  {
-    key: "2",
-    prenom: "Jane",
-    nom: "Doe",
-    email: "janedoe@gmail.com",
-    role: "user",
-  },
-  {
-    key: "3",
-    prenom: "John",
-    nom: "Smith",
-    email: "johnsmith@gmail.com",
-    role: "user",
-  },
-];
-
-const TableComponent = () => {
+const TableComponent = ({ data }) => {
   const columns = [
     {
       title: "Prénom",
