@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/utilisateur")
@@ -42,5 +44,12 @@ public class UtilisateurController {
     public ResponseEntity<?> supprimerUtilisateur(@PathVariable Long id) {
         HopeProjectApplication.LOGGER.info("Suppression d'un utilisateur avec ID : {}", id);
         return utilisateurService.supprimerUtilisateur(id);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody Map<String, String> credentials) {
+        String login = credentials.get("login");
+        String mdp = credentials.get("mdp");
+        return utilisateurService.login(login, mdp);
     }
 }
