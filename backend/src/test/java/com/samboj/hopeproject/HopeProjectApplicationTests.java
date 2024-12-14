@@ -1,13 +1,13 @@
-package com.lsi.hope;
+package com.samboj.hopeproject;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HopeApplicationTests {
+class HopeProjectApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
