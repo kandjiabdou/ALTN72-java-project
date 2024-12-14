@@ -12,6 +12,12 @@ public class Ressource {
     private String descriptionSimple;
     private String descriptionDetaillee;
     private String lien;
-    private int limiteFeedBack;
-    private boolean status;
+    private int limiteFeedBack = 5;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.VALIDE;
+
+    public enum Status {
+        VALIDE, PROPOSE, REJETE
+    }
 }
