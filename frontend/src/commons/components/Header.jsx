@@ -32,9 +32,6 @@ const Header = () => {
             <li>
               <Button href="/login">Connexion</Button>
             </li>
-            <li>
-              <Button href="/register">Inscription</Button>
-            </li>
           </>
         )}
       </ul>

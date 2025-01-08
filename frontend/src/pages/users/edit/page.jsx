@@ -27,13 +27,13 @@ const EditUserPage = () => {
         form.setFieldsValue(data);
         setLoading(false);
       });
-    // TEMP
-    form.setFieldsValue({
-      prenom: "Jean",
-      nom: "Dupont",
-      email: "jean.dupont@gmail.com",
-      role: "professeur",
-    });
+    // REMOVE THIS
+    // form.setFieldsValue({
+    //   prenom: "Jean",
+    //   nom: "Dupont",
+    //   email: "jean.dupont@gmail.com",
+    //   role: "professeur",
+    // });
     setLoading(false);
   }, [userId, form]);
 

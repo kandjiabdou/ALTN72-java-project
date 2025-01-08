@@ -24,39 +24,39 @@ const RessourcePage = () => {
           .then((response) => response.json())
           .then((data) => setRessource(data));
 
-        // TEMP
-        setRessource({
-          titre: "Github",
-          domaine: "Développement",
-          descriptionSimple: "Github est une plateforme de développement",
-          descriptionDetaillee: "Github est une plateforme de développement",
-          lien: "https://www.github.com",
-          acces: "Gratuit",
-          feedbacksUtilisateurs: [
-            {
-              id: 1,
-              note: 4,
-              contenu: "Super ressource",
-              auteur: {
-                id: 1,
-                prenom: "John",
-                nom: "Doe",
-                role: "professeur",
-              },
-            },
-            {
-              id: 2,
-              note: 3,
-              contenu: "Pas mal",
-              auteur: {
-                id: 2,
-                prenom: "Jane",
-                nom: "Doe",
-                role: "etudiant",
-              },
-            },
-          ],
-        });
+        // REMOVE THIS
+        // setRessource({
+        //   titre: "Github",
+        //   domaine: "Développement",
+        //   descriptionSimple: "Github est une plateforme de développement",
+        //   descriptionDetaillee: "Github est une plateforme de développement",
+        //   lien: "https://www.github.com",
+        //   acces: "Gratuit",
+        //   feedbacksUtilisateurs: [
+        //     {
+        //       id: 1,
+        //       note: 4,
+        //       contenu: "Super ressource",
+        //       auteur: {
+        //         id: 1,
+        //         prenom: "John",
+        //         nom: "Doe",
+        //         role: "professeur",
+        //       },
+        //     },
+        //     {
+        //       id: 2,
+        //       note: 3,
+        //       contenu: "Pas mal",
+        //       auteur: {
+        //         id: 2,
+        //         prenom: "Jane",
+        //         nom: "Doe",
+        //         role: "etudiant",
+        //       },
+        //     },
+        //   ],
+        // });
       } catch (error) {
         console.error(error);
       }

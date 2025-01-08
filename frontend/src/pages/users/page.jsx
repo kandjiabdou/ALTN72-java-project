@@ -7,29 +7,30 @@ const UsersPage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    setData([
-      {
-        key: "1",
-        prenom: "John",
-        nom: "Doe",
-        email: "johndoe@gmail.com",
-        role: "admin",
-      },
-      {
-        key: "2",
-        prenom: "Jane",
-        nom: "Doe",
-        email: "janedoe@gmail.com",
-        role: "user",
-      },
-      {
-        key: "3",
-        prenom: "John",
-        nom: "Smith",
-        email: "johnsmith@gmail.com",
-        role: "user",
-      },
-    ]);
+    // REMOVE THIS
+    // setData([
+    //   {
+    //     key: "1",
+    //     prenom: "John",
+    //     nom: "Doe",
+    //     email: "johndoe@gmail.com",
+    //     role: "admin",
+    //   },
+    //   {
+    //     key: "2",
+    //     prenom: "Jane",
+    //     nom: "Doe",
+    //     email: "janedoe@gmail.com",
+    //     role: "user",
+    //   },
+    //   {
+    //     key: "3",
+    //     prenom: "John",
+    //     nom: "Smith",
+    //     email: "johnsmith@gmail.com",
+    //     role: "user",
+    //   },
+    // ]);
 
     getData();
   }, []);

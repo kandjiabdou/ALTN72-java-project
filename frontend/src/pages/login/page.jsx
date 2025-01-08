@@ -55,10 +55,6 @@ const LoginPage = () => {
           <Button block type="primary" htmlType="submit">
             Se connecter
           </Button>
-          ou
-          <Button type="link" href="">
-            S'inscrire
-          </Button>
         </Form.Item>
       </Form>
     </div>

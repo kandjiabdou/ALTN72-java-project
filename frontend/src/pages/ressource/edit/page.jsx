@@ -30,14 +30,15 @@ const EditRessourcePage = () => {
         setLoading(false);
       });
 
-    form.setFieldsValue({
-      titre: "Github",
-      domaine: "Développement",
-      descriptionSimple: "Github est une plateforme de développement",
-      descriptionDetaillee: "Github est une plateforme de développement",
-      lien: "https://www.github.com",
-      acces: "Gratuit",
-    });
+    // REMOVE THIS
+    // form.setFieldsValue({
+    //   titre: "Github",
+    //   domaine: "Développement",
+    //   descriptionSimple: "Github est une plateforme de développement",
+    //   descriptionDetaillee: "Github est une plateforme de développement",
+    //   lien: "https://www.github.com",
+    //   acces: "Gratuit",
+    // });
   }, [ressourceId, form]);
 
   const handleSubmit = async (values) => {
