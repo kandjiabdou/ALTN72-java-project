@@ -68,7 +68,7 @@ const EditRessourcePage = () => {
   ) : (
     <div className="flex flex-col justify-center items-center h-full gap-4">
       <span className="flex items-center gap-4">
-        <Button icon={<ArrowLeftOutlined />} href="/ressources" size="small" />
+        <Button icon={<ArrowLeftOutlined />} href="/" size="small" />
         <h1>
           Modifier la ressource {form.getFieldValue("titre")}{" "}
           {form.getFieldValue("nom")}
