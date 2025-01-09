@@ -28,14 +28,18 @@ const TableComponent = ({ data }) => {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: () => (
+      render: (_, record) => (
         <div className="flex gap-2 items-center justify-center">
-          <Button size="small" icon={<EditOutlined />} href="/users/edit/1" />
+          <Button
+            size="small"
+            icon={<EditOutlined />}
+            href={`/users/edit/${record.idUser}`}
+          />
           <Button
             size="small"
             danger
             icon={<DeleteOutlined />}
-            onClick={() => handleDelete(1)}
+            onClick={() => handleDelete(record.idUser)}
           />
         </div>
       ),

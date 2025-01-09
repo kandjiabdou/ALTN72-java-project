@@ -7,13 +7,14 @@ import {
   LockOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const CreateUserPage = () => {
   const [form, setForm] = useState({
     prenom: "",
     nom: "",
-    email: "",
-    motDePasse: "",
+    login: "",
+    mdp: "",
     role: "ETUDIANT",
   });
 
@@ -22,9 +23,10 @@ const CreateUserPage = () => {
     setForm({ ...form, [name]: value });
   };
 
+  const navigate = useNavigate();
   const handleSubmit = async () => {
     try {
-      fetch(`${import.meta.env.VITE_API_URL}/user/`, {
+      fetch(`${import.meta.env.VITE_API_URL}/users`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -34,11 +36,13 @@ const CreateUserPage = () => {
       }).then((response) => {
         if (response.ok) {
           message.success("Utilisateur créé avec succès");
+          navigate("/users");
         } else {
           message.error("Erreur lors de la création de l'utilisateur");
         }
       });
     } catch (error) {
+      message.error("Erreur lors de la création de l'utilisateur");
       console.error(error);
     }
     setForm({
