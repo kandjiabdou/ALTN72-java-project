@@ -57,9 +57,9 @@ const CreateRessourcePage = () => {
 
           <h1>Créer un ressource</h1>
         </span>
-        {user && user.role == "professeur" && (
+        {user && user.role == "PROF" && (
           <span className="text-sm text-gray-500">
-            Votre ajout sera soumis à validation par un administrateur
+            Votre ajout sera soumis à validation par un ADMIN
           </span>
         )}
       </span>

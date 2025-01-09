@@ -14,7 +14,7 @@ const CreateUserPage = () => {
     nom: "",
     email: "",
     motDePasse: "",
-    role: "etudiant",
+    role: "ETUDIANT",
   });
 
   const handleChange = (e) => {
@@ -46,7 +46,7 @@ const CreateUserPage = () => {
       nom: "",
       email: "",
       motDePasse: "",
-      role: "etudiant",
+      role: "ETUDIANT",
     });
   };
 
@@ -130,10 +130,10 @@ const CreateUserPage = () => {
           />
         </Form.Item>
         <Form.Item name="role">
-          <Select defaultValue="etudiant" style={{ width: 120 }}>
-            <Select.Option value="etudiant">Étudiant</Select.Option>
-            <Select.Option value="professeur">Professeur</Select.Option>
-            <Select.Option value="administrateur">Administrateur</Select.Option>
+          <Select defaultValue="ETUDIANT" style={{ width: 120 }}>
+            <Select.Option value="ETUDIANT">Étudiant</Select.Option>
+            <Select.Option value="PROF">Professeur</Select.Option>
+            <Select.Option value="ADMIN">Administrateur</Select.Option>
           </Select>
         </Form.Item>
 

@@ -41,7 +41,7 @@ const RessourcePage = () => {
         //         id: 1,
         //         prenom: "John",
         //         nom: "Doe",
-        //         role: "professeur",
+        //         role: "PROF",
         //       },
         //     },
         //     {
@@ -52,7 +52,7 @@ const RessourcePage = () => {
         //         id: 2,
         //         prenom: "Jane",
         //         nom: "Doe",
-        //         role: "etudiant",
+        //         role: "ETUDIANT",
         //       },
         //     },
         //   ],
@@ -111,7 +111,7 @@ const RessourcePage = () => {
                     </span>
                     <span className="flex items-center gap-4">
                       <p className="text-gray-600">{feedback.note}/5</p>
-                      {user && user.role == "administrateur" && (
+                      {user && user.role == "ADMIN" && (
                         <Button icon={<DeleteOutlined />} danger size="small" />
                       )}
                     </span>

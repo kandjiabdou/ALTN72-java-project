@@ -18,7 +18,9 @@ const LoginPage = () => {
       );
 
       if (response.ok) {
-        localStorage.setItem("token", response.headers.get("Authorization"));
+        const data = await response.json();
+        console.log("data", data)
+        localStorage.setItem("token",data.token)
         window.location.href = "/";
         message.success("Connexion réussie");
       } else {
@@ -38,7 +40,7 @@ const LoginPage = () => {
     <div className="flex justify-center items-center h-full">
       <Form name="login" onFinish={onFinish}>
         <Form.Item
-          name="email"
+          name="login"
           rules={[
             {
               required: true,
@@ -49,7 +51,7 @@ const LoginPage = () => {
           <Input prefix={<MailOutlined />} placeholder="Email" />
         </Form.Item>
         <Form.Item
-          name="motDePasse"
+          name="mdp"
           rules={[
             {
               required: true,
