@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/ressources")
+@CrossOrigin(origins = "*")
 public class FeedbackController {
 
     @Autowired

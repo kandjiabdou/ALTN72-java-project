@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/ressources")
+@CrossOrigin(origins = "*")
 public class RessourceController {
 
     @Autowired
@@ -25,7 +26,7 @@ public class RessourceController {
         return ressourceService.recupererRessourceParId(id);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Object> ajouterRessource(@RequestBody Ressource ressource) {
         return ressourceService.ajouterRessource(ressource);
     }
