@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 
 import java.util.Map;
-
 
 @RestController
 @RequestMapping("/api/users")
@@ -23,6 +23,18 @@ public class UtilisateurController {
     public ResponseEntity<?> recupererTousLesUtilisateurs() {
         HopeProjectApplication.LOGGER.info("Récupération de tous les utilisateurs");
         return utilisateurService.recupererTousLesUtilisateurs();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<Object> recupererUtilisateurActuel(
+            @RequestHeader(value = "Authorization", required = true) String authorizationHeader) {
+
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return utilisateurService.createErrorResponse(HttpStatus.UNAUTHORIZED, "Token manquant ou invalide.");
+        }
+
+        String token = authorizationHeader.substring(7); // Supprimer "Bearer " pour obtenir le token
+        return utilisateurService.recupererUtilisateurActuel(token);
     }
 
     @GetMapping("/{id}")

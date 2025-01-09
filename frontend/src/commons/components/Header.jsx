@@ -11,7 +11,7 @@ const Header = () => {
           <Button href="/">Dashboard</Button>
         </li>
 
-        {user && user.role === "administrateur" ? (
+        {user && user.role === "ADMIN" ? (
           <li>
             <Button href="/users">Utilisateurs</Button>
           </li>

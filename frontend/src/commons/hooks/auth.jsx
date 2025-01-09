@@ -18,7 +18,7 @@ const useUser = () => {
     // setUser({
     //   prenom: "John",
     //   nom: "Doe",
-    //   role: "administrateur",
+    //   role: "ADMIN",
     // });
   }, []);
   return user;

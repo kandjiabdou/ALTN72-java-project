@@ -61,7 +61,7 @@ const TableComponent = ({ data }) => {
             href={`/ressource/${record.id}`}
           />
 
-          {user && user.role === "administrateur" && (
+          {user && user.role === "ADMIN" && (
             <>
               <Button
                 size="small"
