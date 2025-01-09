@@ -1,23 +1,35 @@
 /* eslint-disable react/no-unescaped-entities */
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 
 const LoginPage = () => {
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
+    console.log("Received values of form: ", values);
     try {
-      fetch(`${import.meta.env.VITE_API_URL}/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      }).then((response) => {
-        if (response.ok) {
-          localStorage.setItem("token", response.headers.get("Authorization"));
-          window.location.href = "/";
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/users/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
         }
-      });
+      );
+
+      if (response.ok) {
+        localStorage.setItem("token", response.headers.get("Authorization"));
+        window.location.href = "/";
+        message.success("Connexion réussie");
+      } else {
+        const msg = await response.json();
+        message.error(msg?.message || "Erreur lors de la connexion");
+      }
+
+      console.log("fin");
     } catch (error) {
+      console.log("error");
+      message.error("Erreur lors de la connexion");
       console.error(error);
     }
   };
