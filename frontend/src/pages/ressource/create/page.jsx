@@ -22,7 +22,7 @@ const CreateRessourcePage = () => {
 
   const handleSubmit = async () => {
     try {
-      fetch(`${import.meta.env.VITE_API_URL}/ressource/`, {
+      fetch(`${import.meta.env.VITE_API_URL}/ressources`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

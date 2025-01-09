@@ -26,7 +26,7 @@ public class RessourceController {
         return ressourceService.recupererRessourceParId(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Object> ajouterRessource(@RequestBody Ressource ressource) {
         return ressourceService.ajouterRessource(ressource);
     }

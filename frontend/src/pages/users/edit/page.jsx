@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { message, Form, Input, Button, Spin } from "antd";
 import { Select } from "antd";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 import {
   UserOutlined,
   MailOutlined,
@@ -17,7 +18,7 @@ const EditUserPage = () => {
   const userId = useParams().id;
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/user/${userId}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -37,9 +38,11 @@ const EditUserPage = () => {
     setLoading(false);
   }, [userId, form]);
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (values) => {
     try {
-      fetch(`${import.meta.env.VITE_API_URL}/user/`, {
+      fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -48,9 +51,10 @@ const EditUserPage = () => {
         body: JSON.stringify(values),
       }).then((response) => {
         if (response.ok) {
-          message.success("Utilisateur créé avec succès");
+          message.success("Utilisateur modifié avec succès");
+          navigate("/users");
         } else {
-          message.error("Erreur lors de la création de l'utilisateur");
+          message.error("Erreur lors de la modification de l'utilisateur");
         }
       });
     } catch (error) {
@@ -103,18 +107,18 @@ const EditUserPage = () => {
           </Form.Item>
         </div>
         <Form.Item
-          name="email"
+          name="login"
           rules={[
             {
               required: true,
-              message: "Veuillez entrer un email !",
+              message: "Veuillez entrer un nom d'utilisateur !",
             },
           ]}
         >
-          <Input type="email" prefix={<MailOutlined />} placeholder="Email" />
+          <Input prefix={<MailOutlined />} placeholder="Nom d'utilisateur" />
         </Form.Item>
         <Form.Item
-          name="motDePasse"
+          name="mdp"
           extra="Laissez vide pour ne pas changer le mot de passe"
         >
           <Input
