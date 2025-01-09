@@ -22,6 +22,7 @@ public class Ressource {
     private String descriptionSimple;
 
     private String descriptionDetaillee;
+    private String acces;
 
     @NotBlank(message = "Le lien est obligatoire.")
     private String lien;
@@ -54,15 +55,6 @@ public class Ressource {
         this.dateCreation = LocalDateTime.now();
     }
 
-    // Getters et Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getTitre() {
         return titre;
     }
@@ -85,6 +77,14 @@ public class Ressource {
 
     public void setDescriptionSimple(String descriptionSimple) {
         this.descriptionSimple = descriptionSimple;
+    }
+
+    public String getAcces() {
+        return acces;
+    }
+
+    public void setAcces(String acces) {
+        this.acces = acces;
     }
 
     public String getDescriptionDetaillee() {
