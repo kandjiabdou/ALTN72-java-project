@@ -15,11 +15,11 @@ const useUser = () => {
     }
 
     //REMOVE THIS
-    setUser({
-      prenom: "John",
-      nom: "Doe",
-      role: "administrateur",
-    });
+    // setUser({
+    //   prenom: "John",
+    //   nom: "Doe",
+    //   role: "administrateur",
+    // });
   }, []);
   return user;
 };
