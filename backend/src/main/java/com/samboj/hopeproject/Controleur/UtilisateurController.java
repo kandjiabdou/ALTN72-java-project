@@ -2,6 +2,7 @@ package com.samboj.hopeproject.Controleur;
 
 import com.samboj.hopeproject.HopeProjectApplication;
 import com.samboj.hopeproject.Modele.Utilisateur;
+import com.samboj.hopeproject.Modele.UtilisateurDto;
 import com.samboj.hopeproject.Service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,7 @@ public class UtilisateurController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> modifierUtilisateur(@PathVariable Long id, @Valid @RequestBody Utilisateur utilisateur) {
+    public ResponseEntity<Object> modifierUtilisateur(@PathVariable Long id, @Valid @RequestBody UtilisateurDto utilisateur) {
         return utilisateurService.modifierUtilisateur(id, utilisateur);
     }
 
