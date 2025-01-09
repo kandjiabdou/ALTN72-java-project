@@ -5,7 +5,7 @@ const useUser = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch("http://localhost:3001/api/user", {
+      fetch("http://localhost:8000/api/users/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -18,7 +18,7 @@ const useUser = () => {
     // setUser({
     //   prenom: "John",
     //   nom: "Doe",
-    //   role: "administrateur",
+    //   role: "ADMIN",
     // });
   }, []);
   return user;

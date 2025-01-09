@@ -2,6 +2,8 @@ package com.samboj.hopeproject.Service;
 
 import com.samboj.hopeproject.Modele.Utilisateur;
 import com.samboj.hopeproject.Repository.UtilisateurRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
@@ -25,7 +27,7 @@ public class UtilisateurService {
 
     private static final String SECRET_KEY = "z4PhNX7vuL3xVChQ1m2AB9Yg5AULVxXcg/SpIdNs6c5H0NE8XYXysP+DGNKHfuwvY7kxvUdBeoGlODJ6+SfaPg==";
 
-    private ResponseEntity<Object> createErrorResponse(HttpStatus status, String message) {
+    public ResponseEntity<Object> createErrorResponse(HttpStatus status, String message) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", status.value());
         response.put("message", message);
@@ -56,7 +58,7 @@ public class UtilisateurService {
 
         // Génération du token JWT
         String token = Jwts.builder()
-                .setSubject(utilisateur.getLogin())
+                .setSubject(utilisateur.getIdUser().toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 1 heure
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
@@ -91,14 +93,25 @@ public class UtilisateurService {
         }
     }
 
-    public ResponseEntity<Object> recupererUtilisateurParLogin(String login) {
-        logger.info("Recherche d'un utilisateur avec le login: {}", login);
-        Optional<Utilisateur> utilisateur = utilisateurRepository.findByLogin(login);
-        if (utilisateur.isPresent()) {
-            return ResponseEntity.ok(maskPassword(utilisateur.get()));
-        } else {
-            logger.warn("Utilisateur avec le login {} introuvable", login);
-            return createErrorResponse(HttpStatus.NOT_FOUND, "Utilisateur introuvable avec le login: " + login);
+    public ResponseEntity<Object> recupererUtilisateurActuel(String token) {
+        try {
+            // Décoder le token pour récupérer les informations
+            Claims claims = Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            Long userId = Long.parseLong(claims.getSubject());
+            Optional<Utilisateur> utilisateurOpt = utilisateurRepository.findById(userId);
+
+            if (utilisateurOpt.isPresent()) {
+                return ResponseEntity.ok(maskPassword(utilisateurOpt.get()));
+            } else {
+                return createErrorResponse(HttpStatus.NOT_FOUND, "Utilisateur introuvable.");
+            }
+        } catch (JwtException | IllegalArgumentException e) {
+            logger.error("Erreur lors de la validation du token: {}", e.getMessage());
+            return createErrorResponse(HttpStatus.UNAUTHORIZED, "Token invalide ou expiré.");
         }
     }
 

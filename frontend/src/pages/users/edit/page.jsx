@@ -32,7 +32,7 @@ const EditUserPage = () => {
     //   prenom: "Jean",
     //   nom: "Dupont",
     //   email: "jean.dupont@gmail.com",
-    //   role: "professeur",
+    //   role: "PROF",
     // });
     setLoading(false);
   }, [userId, form]);
@@ -124,10 +124,10 @@ const EditUserPage = () => {
           />
         </Form.Item>
         <Form.Item name="role">
-          <Select defaultValue="etudiant" style={{ width: 150 }}>
-            <Select.Option value="etudiant">Étudiant</Select.Option>
-            <Select.Option value="professeur">Professeur</Select.Option>
-            <Select.Option value="administrateur">Administrateur</Select.Option>
+          <Select defaultValue="ETUDIANT" style={{ width: 150 }}>
+            <Select.Option value="ETUDIANT">Étudiant</Select.Option>
+            <Select.Option value="PROF">Professeur</Select.Option>
+            <Select.Option value="ADMIN">Administrateur</Select.Option>
           </Select>
         </Form.Item>
 

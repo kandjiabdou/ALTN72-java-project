@@ -349,7 +349,7 @@ const DashboardPage = () => {
   }, []);
 
   const getData = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/users`, {
+    fetch(`${import.meta.env.VITE_API_URL}/ressources`, {
       headers: {
         Authorization: localStorage.getItem("token"),
       },
@@ -366,13 +366,13 @@ const DashboardPage = () => {
     <div className="p-4 py-10 bg-gray-100 eh-full flex flex-col gap-5 h-full">
       <h1 className="text-2xl font-bold text-center">Dashboard</h1>
       <div className="flex gap-2">
-        {user.role === "administrateur" ||
-          (user.role === "professeur" && (
+        {user.role === "ADMIN" ||
+          (user.role === "PROF" && (
             <Button href="/ressource/create" icon={<PlusOutlined />} />
           ))}
 
         <Button icon={<ReloadOutlined />} onClick={getData} />
-        {user.role === "administrateur" && (
+        {user.role === "ADMIN" && (
           <Select placeholder="Filtrer par statut" style={{ width: 120 }}>
             <Select.Option value="valide">Validé</Select.Option>
             <Select.Option value="en_cours">Proposée</Select.Option>
