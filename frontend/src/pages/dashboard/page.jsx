@@ -371,10 +371,9 @@ const DashboardPage = () => {
     <div className="p-4 py-10 bg-gray-100 eh-full flex flex-col gap-5 h-full">
       <h1 className="text-2xl font-bold text-center">Dashboard</h1>
       <div className="flex gap-2">
-        {user.role === "ADMIN" ||
-          (user.role === "PROF" && (
-            <Button href="/ressource/create" icon={<PlusOutlined />} />
-          ))}
+        {(user.role === "ADMIN" || user.role === "PROF") && (
+          <Button href="/ressource/create" icon={<PlusOutlined />} />
+        )}
 
         <Button icon={<ReloadOutlined />} onClick={getData} />
         {user.role === "ADMIN" && (
