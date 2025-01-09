@@ -60,7 +60,6 @@ const EditUserPage = () => {
     } catch (error) {
       console.error(error);
     }
-    form.resetFields();
   };
 
   return loading ? (

@@ -1,6 +1,7 @@
 package com.samboj.hopeproject.Service;
 
 import com.samboj.hopeproject.Modele.Utilisateur;
+import com.samboj.hopeproject.Modele.UtilisateurDto;
 import com.samboj.hopeproject.Repository.UtilisateurRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -164,7 +165,7 @@ public class UtilisateurService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> modifierUtilisateur(Long id, Utilisateur utilisateur) {
+    public ResponseEntity<Object> modifierUtilisateur(Long id, UtilisateurDto utilisateur) {
         logger.info("Modification de l'utilisateur avec l'ID: {}", id);
         Optional<Utilisateur> utilisateurExistant = utilisateurRepository.findById(id);
         if (!utilisateurExistant.isPresent()) {
@@ -173,12 +174,25 @@ public class UtilisateurService {
         }
 
         Utilisateur utilisateurAMettreAJour = utilisateurExistant.get();
-        if (utilisateur.getLogin() != null) utilisateurAMettreAJour.setLogin(utilisateur.getLogin());
-        if (utilisateur.getMdp() != null) utilisateurAMettreAJour.setMdp(utilisateur.getMdp());
-        if (utilisateur.getRole() != null) utilisateurAMettreAJour.setRole(utilisateur.getRole());
 
+        // Mise à jour des champs fournis dans le DTO
+        if (utilisateur.getLogin() != null) {
+            utilisateurAMettreAJour.setLogin(utilisateur.getLogin());
+        }
+        if (utilisateur.getMdp() != null && !utilisateur.getMdp().isBlank()) {
+            // Hashage du mot de passe avant de le mettre à jour
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            utilisateurAMettreAJour.setMdp(passwordEncoder.encode(utilisateur.getMdp()));
+        }
+        if (utilisateur.getRole() != null) {
+            utilisateurAMettreAJour.setRole(utilisateur.getRole());
+        }
+
+        // Enregistrement de l'utilisateur mis à jour dans la base de données
         Utilisateur utilisateurMisAJour = utilisateurRepository.save(utilisateurAMettreAJour);
         logger.info("Utilisateur avec l'ID {} modifié avec succès", id);
+
+        // Retourne l'utilisateur mis à jour avec le mot de passe masqué
         return ResponseEntity.ok(maskPassword(utilisateurMisAJour));
     }
 }

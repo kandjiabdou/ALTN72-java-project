@@ -71,7 +71,8 @@ public class FeedbackService {
         feedbackResponse.put("contenu", feedback.getContenu());
         feedbackResponse.put("auteur", Map.of(
                 "id", feedback.getUtilisateur().getIdUser(),
-                "nom", feedback.getUtilisateur().getNom()
+                "nom", feedback.getUtilisateur().getNom(),
+                "role", feedback.getUtilisateur().getRole()
         ));
         return feedbackResponse;
     }
