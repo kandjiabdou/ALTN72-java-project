@@ -44,8 +44,8 @@ const CreateUserPage = () => {
     setForm({
       prenom: "",
       nom: "",
-      email: "",
-      motDePasse: "",
+      login: "",
+      mdp: "",
       role: "ETUDIANT",
     });
   };
@@ -94,25 +94,24 @@ const CreateUserPage = () => {
           </Form.Item>
         </div>
         <Form.Item
-          name="email"
+          name="login"
           rules={[
             {
               required: true,
-              message: "Veuillez entrer un email !",
+              message: "Veuillez entrer un nom d'utilisateur !",
             },
           ]}
         >
           <Input
-            type="email"
-            name="email"
+            name="login"
             prefix={<MailOutlined />}
             value={form.email}
             onChange={handleChange}
-            placeholder="Email"
+            placeholder="Nom d'utilisateur"
           />
         </Form.Item>
         <Form.Item
-          name="password"
+          name="mdp"
           rules={[
             {
               required: true,
@@ -122,7 +121,7 @@ const CreateUserPage = () => {
         >
           <Input
             type="password"
-            name="motDePasse"
+            name="mdp"
             prefix={<LockOutlined />}
             value={form.motDePasse}
             onChange={handleChange}
