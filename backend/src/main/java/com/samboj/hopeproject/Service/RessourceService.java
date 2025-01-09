@@ -55,6 +55,7 @@ public class RessourceService {
         if (ressource.getDomaine() != null) ressourceAMettreAJour.setDomaine(ressource.getDomaine());
         if (ressource.getDescriptionSimple() != null) ressourceAMettreAJour.setDescriptionSimple(ressource.getDescriptionSimple());
         if (ressource.getDescriptionDetaillee() != null) ressourceAMettreAJour.setDescriptionDetaillee(ressource.getDescriptionDetaillee());
+        if (ressource.getAcces() != null) ressourceAMettreAJour.setAcces(ressource.getAcces());
         if (ressource.getLien() != null) ressourceAMettreAJour.setLien(ressource.getLien());
         if (ressource.getStatus() != null) ressourceAMettreAJour.setStatus(ressource.getStatus());
         if (ressource.getLimiteFeedBack() != 0) ressourceAMettreAJour.setLimiteFeedBack(ressource.getLimiteFeedBack());
