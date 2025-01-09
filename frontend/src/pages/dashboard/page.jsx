@@ -11,7 +11,7 @@ const DashboardPage = () => {
   const user = useUser();
 
   useEffect(() => {
-    // REMOVE THIS
+    //REMOVE THIS
     // setData([
     //   {
     //     key: 1,
@@ -357,6 +357,11 @@ const DashboardPage = () => {
       .then((response) => response.json())
       .then((data) => {
         setData(data);
+        const updatedData = data.map((item, index) => ({
+          ...item,
+          key: index + 1,
+        }));
+        setData(updatedData);
       });
   };
 
