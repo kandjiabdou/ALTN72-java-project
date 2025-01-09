@@ -14,7 +14,7 @@ const useUser = () => {
         .then((data) => setUser(data));
     }
 
-    // REMOVE THIS
+    //REMOVE THIS
     // setUser({
     //   prenom: "John",
     //   nom: "Doe",
