@@ -10,13 +10,6 @@ services:
       - db
     restart: always
 
-  frontend:
-    build:
-      context: ./frontend
-    ports:
-      - "3014:80" # Serve l'app Vite sur le port 3014
-    restart: always
-
   db:
     image: mariadb:10.6
     ports:
