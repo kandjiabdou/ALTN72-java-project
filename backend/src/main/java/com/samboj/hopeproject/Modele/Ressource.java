@@ -29,9 +29,7 @@ public class Ressource {
 
     private int limiteFeedBack = 5;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "Le statut est obligatoire.")
-    private Status status;
+    private Status status = Status.PROPOSE;
 
     private LocalDateTime dateCreation = LocalDateTime.now();
 
