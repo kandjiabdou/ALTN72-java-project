@@ -15,7 +15,7 @@ const EditRessourcePage = () => {
   const ressourceId = useParams().id;
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/ressource/${ressourceId}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/ressources/${ressourceId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -43,7 +43,7 @@ const EditRessourcePage = () => {
 
   const handleSubmit = async (values) => {
     try {
-      fetch(`${import.meta.env.VITE_API_URL}/ressource/`, {
+      fetch(`${import.meta.env.VITE_API_URL}/ressources/${ressourceId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

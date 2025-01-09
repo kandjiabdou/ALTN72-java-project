@@ -40,14 +40,18 @@ const TableComponent = ({ data }) => {
     },
     {
       title: "Description",
-      dataIndex: "description_simple",
-      key: "description_simple",
+      dataIndex: "descriptionSimple",
+      key: "descriptionSimple",
     },
     {
       title: "Lien",
       dataIndex: "lien",
       key: "lien",
-      render: () => <Button type="link">https://www.google.com</Button>,
+      render: (_, record) => (
+        <Button type="link" href={record.lien} target="_blank">
+          Lien
+        </Button>
+      ),
     },
     {
       title: "Action",
@@ -93,7 +97,7 @@ const TableComponent = ({ data }) => {
             <div className="p-4 flex flex-col gap-4">
               <p>
                 <strong>Description détaillée: </strong>
-                {record.description_detaillee}
+                {record.descriptionDetaillee}
               </p>
               <p>
                 <strong>Accès: </strong>
