@@ -99,10 +99,6 @@ const TableComponent = ({ data }) => {
                 <strong>Accès: </strong>
                 {record.acces}
               </p>
-              <p>
-                <strong>Feedback utilisateurs: </strong>
-                {record.feedback_utilisateurs}
-              </p>
             </div>
           ),
           rowExpandable: (record) => record.name !== "Not Expandable",

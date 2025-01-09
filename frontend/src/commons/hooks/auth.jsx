@@ -14,12 +14,12 @@ const useUser = () => {
         .then((data) => setUser(data));
     }
 
-    // REMOVE THIS
-    // setUser({
-    //   prenom: "John",
-    //   nom: "Doe",
-    //   role: "administrateur",
-    // });
+    //REMOVE THIS
+    setUser({
+      prenom: "John",
+      nom: "Doe",
+      role: "administrateur",
+    });
   }, []);
   return user;
 };
