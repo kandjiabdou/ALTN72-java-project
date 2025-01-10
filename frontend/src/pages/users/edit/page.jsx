@@ -61,7 +61,7 @@ const EditUserPage = () => {
       <Spin />
     </div>
   ) : (
-    <div className="flex flex-col justify-center items-center h-full gap-4">
+    <div className="flex flex-col justify-center items-center h-full gap-4 pt-32">
       <span className="flex items-center gap-4">
         <Button icon={<ArrowLeftOutlined />} href="/users" size="small" />
         <h1>
