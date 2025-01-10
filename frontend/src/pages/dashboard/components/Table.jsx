@@ -6,6 +6,7 @@ import {
   MessageOutlined,
 } from "@ant-design/icons";
 import { useUser } from "../../../commons/hooks/auth";
+import { Tag } from "antd";
 
 const TableComponent = ({ data }) => {
   const handleDelete = (id) => {
@@ -28,6 +29,21 @@ const TableComponent = ({ data }) => {
   const user = useUser();
 
   const columns = [
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: 100,
+      render: (status) => {
+        let color = "green";
+        if (status === "PROPOSE") {
+          color = "orange";
+        } else if (status === "REFUSE") {
+          color = "red";
+        }
+        return <Tag color={color}>{status}</Tag>;
+      },
+    },
     {
       title: "Titre",
       dataIndex: "titre",
@@ -57,6 +73,7 @@ const TableComponent = ({ data }) => {
       title: "Action",
       dataIndex: "action",
       key: "action",
+      width: 150,
       render: (_, record) => (
         <div className="flex gap-2 items-center justify-center">
           <Button
