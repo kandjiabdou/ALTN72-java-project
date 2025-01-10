@@ -119,7 +119,7 @@ const RessourcePage = () => {
                             fetch(
                               `${
                                 import.meta.env.VITE_API_URL
-                              }/ressources/${id}/feedback/${feedback.id}`,
+                              }/ressources/feedback/${feedback.id}`,
                               {
                                 method: "DELETE",
                                 headers: {

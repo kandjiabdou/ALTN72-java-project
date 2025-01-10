@@ -1,7 +1,7 @@
 import { useUser } from "./commons/hooks/auth";
 import routes from "./commons/routes";
-import { Button } from "antd";
 import { Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/login/page";
 
 const Routing = () => {
   const user = useUser();
@@ -29,17 +29,7 @@ const Routing = () => {
           );
         }
       })}
-      <Route
-        path="*"
-        element={
-          <>
-            <h1>404 Not Found</h1>
-            <Button type="link" href="/login">
-              Login
-            </Button>
-          </>
-        }
-      />
+      <Route path="*" element={<LoginPage />} />
     </Routes>
   );
 };

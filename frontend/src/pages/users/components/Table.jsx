@@ -15,9 +15,9 @@ const TableComponent = ({ data }) => {
       key: "nom",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Nom d'utilisateur",
+      dataIndex: "login",
+      key: "login",
     },
     {
       title: "Role",

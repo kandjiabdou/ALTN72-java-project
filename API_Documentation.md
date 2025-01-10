@@ -252,15 +252,14 @@
     - 401 Unauthorized : Token invalide ou rôle insuffisant
     - 404 Not Found : Ressource non trouvée
 
-- `PUT /ressources/statut` 🔒(administrateur) ⬇️
+- `PUT /ressources/statut/{id}` 🔒(administrateur) ⬇️
 
   - Description : Changement de statut d'une ressource
   - Input Body:
 
   ```json
   {
-    "idRessource": "number",
-    "statut": "enum['propose','valide','rejete']"
+    "statut": "enum['PROPOSE','VALIDE','REFUSE']"
   }
   ```
 
