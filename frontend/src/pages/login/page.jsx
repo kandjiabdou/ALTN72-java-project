@@ -37,7 +37,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center items-center h-full pt-32">
       <Form name="login" onFinish={onFinish}>
         <Form.Item
           name="login"

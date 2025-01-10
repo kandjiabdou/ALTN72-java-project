@@ -69,7 +69,7 @@ const EditRessourcePage = () => {
   return loading ? (
     <Loader />
   ) : (
-    <div className="flex flex-col justify-center items-center h-full gap-4">
+    <div className="flex flex-col justify-center items-center h-full gap-4 pt-12">
       <span className="flex items-baseline gap-4">
         <Button icon={<ArrowLeftOutlined />} href="/" size="small" />
         <h1>
