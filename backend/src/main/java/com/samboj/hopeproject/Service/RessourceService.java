@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -85,5 +86,24 @@ public class RessourceService {
         response.put("status", status.value());
         response.put("message", message);
         return ResponseEntity.status(status).body(response);
+    }
+
+    public ResponseEntity<Object> changerStatusRessource(Long id, String status) {
+        Optional<Ressource> ressourceOptional = ressourceRepository.findById(id);
+
+        if (ressourceOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ressource non trouvée avec l'ID : " + id);
+        }
+
+        Ressource ressource = ressourceOptional.get();
+        try {
+            Ressource.Status nouveauStatus = Ressource.Status.valueOf(status.toUpperCase());
+            ressource.setStatus(nouveauStatus);
+            ressource.setDateDerniereModification(LocalDateTime.now());
+            ressourceRepository.save(ressource);
+            return ResponseEntity.ok("Status mis à jour avec succès.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Status invalide : " + status);
+        }
     }
 }

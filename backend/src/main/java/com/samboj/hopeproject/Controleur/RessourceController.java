@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ressources")
@@ -39,5 +40,13 @@ public class RessourceController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> supprimerRessource(@PathVariable Long id) {
         return ressourceService.supprimerRessource(id);
+    }
+
+    @PutMapping("/status/{id}")
+    public ResponseEntity<Object> changerStatusRessource(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        String status = body.get("status");
+        return ressourceService.changerStatusRessource(id, status);
     }
 }
