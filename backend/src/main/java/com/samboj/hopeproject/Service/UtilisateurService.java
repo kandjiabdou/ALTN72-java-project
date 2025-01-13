@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -165,36 +166,6 @@ public class UtilisateurService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> modifierUtilisateur(Long id, UtilisateurDto utilisateur) {
-        logger.info("Modification de l'utilisateur avec l'ID: {}", id);
-        Optional<Utilisateur> utilisateurExistant = utilisateurRepository.findById(id);
-        if (!utilisateurExistant.isPresent()) {
-            logger.warn("Utilisateur avec l'ID {} introuvable", id);
-            return createErrorResponse(HttpStatus.NOT_FOUND, "Utilisateur introuvable avec l'ID: " + id);
-        }
-
-        Utilisateur utilisateurAMettreAJour = utilisateurExistant.get();
-
-        // Mise à jour des champs fournis dans le DTO
-        if (utilisateur.getLogin() != null) {
-            utilisateurAMettreAJour.setLogin(utilisateur.getLogin());
-        }
-        if (utilisateur.getMdp() != null && !utilisateur.getMdp().isBlank()) {
-            // Hashage du mot de passe avant de le mettre à jour
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            utilisateurAMettreAJour.setMdp(passwordEncoder.encode(utilisateur.getMdp()));
-        }
-        if (utilisateur.getRole() != null) {
-            utilisateurAMettreAJour.setRole(utilisateur.getRole());
-        }
-
-        // Enregistrement de l'utilisateur mis à jour dans la base de données
-        Utilisateur utilisateurMisAJour = utilisateurRepository.save(utilisateurAMettreAJour);
-        logger.info("Utilisateur avec l'ID {} modifié avec succès", id);
-
-        // Retourne l'utilisateur mis à jour avec le mot de passe masqué
-        return ResponseEntity.ok(maskPassword(utilisateurMisAJour));
-    }
     public ResponseEntity<Object> modifierUtilisateur(Long id, UtilisateurDto utilisateur) {
         logger.info("Modification de l'utilisateur avec l'ID: {}", id);
 
