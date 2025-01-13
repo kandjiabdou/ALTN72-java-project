@@ -6,6 +6,7 @@ const { TextArea } = Input;
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Loader from "../../../commons/components/Loader";
 import { useNavigate } from "react-router-dom";
+import { Tag } from "antd";
 const EditRessourcePage = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(true);
@@ -13,9 +14,8 @@ const EditRessourcePage = () => {
   const navigate = useNavigate();
 
   const ressourceId = useParams().id;
-
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/ressource/${ressourceId}`, {
+  const getData = async () => {
+    fetch(`${import.meta.env.VITE_API_URL}/ressources/${ressourceId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -29,21 +29,15 @@ const EditRessourcePage = () => {
         console.error("Error fetching resource:", error);
         setLoading(false);
       });
+  };
 
-    // REMOVE THIS
-    // form.setFieldsValue({
-    //   titre: "Github",
-    //   domaine: "Développement",
-    //   descriptionSimple: "Github est une plateforme de développement",
-    //   descriptionDetaillee: "Github est une plateforme de développement",
-    //   lien: "https://www.github.com",
-    //   acces: "Gratuit",
-    // });
+  useEffect(() => {
+    getData();
   }, [ressourceId, form]);
 
   const handleSubmit = async (values) => {
     try {
-      fetch(`${import.meta.env.VITE_API_URL}/ressource/`, {
+      fetch(`${import.meta.env.VITE_API_URL}/ressources/${ressourceId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -64,16 +58,124 @@ const EditRessourcePage = () => {
     navigate("/");
   };
 
+  const status = form.getFieldValue("status");
+  let color = "green";
+  if (status === "PROPOSE") {
+    color = "orange";
+  } else if (status === "REFUSE") {
+    color = "red";
+  }
+
   return loading ? (
     <Loader />
   ) : (
-    <div className="flex flex-col justify-center items-center h-full gap-4">
-      <span className="flex items-center gap-4">
+    <div className="flex flex-col justify-center items-center h-full gap-4 pt-12">
+      <span className="flex items-baseline gap-4">
         <Button icon={<ArrowLeftOutlined />} href="/" size="small" />
         <h1>
           Modifier la ressource {form.getFieldValue("titre")}{" "}
           {form.getFieldValue("nom")}
         </h1>
+        <Tag color={color}>{status}</Tag>
+      </span>
+
+      <span className="flex flex-col items-center gap-4">
+        {status === "PROPOSE" && (
+          <div className="flex gap-1">
+            <Button
+              size="small"
+              color="primary"
+              variant="outlined"
+              disabled={status === "VALIDE"}
+              onClick={() => {
+                fetch(
+                  `${
+                    import.meta.env.VITE_API_URL
+                  }/ressources/statut/${ressourceId}`,
+                  {
+                    method: "PUT",
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ status: "VALIDE" }),
+                  }
+                ).then((response) => {
+                  if (response.ok) {
+                    message.success("Ressource validée avec succès");
+                    getData();
+                  } else {
+                    message.error(
+                      "Erreur lors de la validation de la ressource"
+                    );
+                  }
+                });
+              }}
+            >
+              Valider
+            </Button>
+            <Button
+              size="small"
+              color="primary"
+              variant="outlined"
+              disabled={status === "PROPOSE"}
+              onClick={() => {
+                fetch(
+                  `${
+                    import.meta.env.VITE_API_URL
+                  }/ressources/statut/${ressourceId}`,
+                  {
+                    method: "PUT",
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ status: "REFUSE" }),
+                  }
+                ).then((response) => {
+                  if (response.ok) {
+                    message.success("Ressource refusée avec succès");
+                    getData();
+                  } else {
+                    message.error("Erreur lors du refus de la ressource");
+                  }
+                });
+              }}
+            >
+              Proposer
+            </Button>
+            <Button
+              size="small"
+              color="danger"
+              variant="outlined"
+              disabled={status === "REFUSE"}
+              onClick={() => {
+                fetch(
+                  `${
+                    import.meta.env.VITE_API_URL
+                  }/ressources/statut/${ressourceId}`,
+                  {
+                    method: "PUT",
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ status: "REFUSE" }),
+                  }
+                ).then((response) => {
+                  if (response.ok) {
+                    message.success("Ressource refusée avec succès");
+                    getData();
+                  } else {
+                    message.error("Erreur lors du refus de la ressource");
+                  }
+                });
+              }}
+            >
+              Refuser
+            </Button>
+          </div>
+        )}
       </span>
       <Form
         form={form}

@@ -3,7 +3,6 @@ import { message, Form, Input, Button } from "antd";
 import { Select } from "antd";
 import {
   UserOutlined,
-  MailOutlined,
   LockOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
@@ -108,8 +107,8 @@ const CreateUserPage = () => {
         >
           <Input
             name="login"
-            prefix={<MailOutlined />}
-            value={form.email}
+            prefix={<UserOutlined />}
+            value={form.login}
             onChange={handleChange}
             placeholder="Nom d'utilisateur"
           />

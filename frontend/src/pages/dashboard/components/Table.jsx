@@ -6,6 +6,7 @@ import {
   MessageOutlined,
 } from "@ant-design/icons";
 import { useUser } from "../../../commons/hooks/auth";
+import { Tag } from "antd";
 
 const TableComponent = ({ data }) => {
   const handleDelete = (id) => {
@@ -29,6 +30,21 @@ const TableComponent = ({ data }) => {
 
   const columns = [
     {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: 100,
+      render: (status) => {
+        let color = "green";
+        if (status === "PROPOSE") {
+          color = "orange";
+        } else if (status === "REFUSE") {
+          color = "red";
+        }
+        return <Tag color={color}>{status}</Tag>;
+      },
+    },
+    {
       title: "Titre",
       dataIndex: "titre",
       key: "titre",
@@ -40,19 +56,24 @@ const TableComponent = ({ data }) => {
     },
     {
       title: "Description",
-      dataIndex: "description_simple",
-      key: "description_simple",
+      dataIndex: "descriptionSimple",
+      key: "descriptionSimple",
     },
     {
       title: "Lien",
       dataIndex: "lien",
       key: "lien",
-      render: () => <Button type="link">https://www.google.com</Button>,
+      render: (_, record) => (
+        <Button type="link" href={record.lien} target="_blank">
+          Lien
+        </Button>
+      ),
     },
     {
       title: "Action",
       dataIndex: "action",
       key: "action",
+      width: 150,
       render: (_, record) => (
         <div className="flex gap-2 items-center justify-center">
           <Button
@@ -93,7 +114,7 @@ const TableComponent = ({ data }) => {
             <div className="p-4 flex flex-col gap-4">
               <p>
                 <strong>Description détaillée: </strong>
-                {record.description_detaillee}
+                {record.descriptionDetaillee}
               </p>
               <p>
                 <strong>Accès: </strong>

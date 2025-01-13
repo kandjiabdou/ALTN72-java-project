@@ -6,7 +6,6 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import {
   UserOutlined,
-  MailOutlined,
   LockOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
@@ -28,13 +27,7 @@ const EditUserPage = () => {
         form.setFieldsValue(data);
         setLoading(false);
       });
-    // REMOVE THIS
-    // form.setFieldsValue({
-    //   prenom: "Jean",
-    //   nom: "Dupont",
-    //   email: "jean.dupont@gmail.com",
-    //   role: "PROF",
-    // });
+
     setLoading(false);
   }, [userId, form]);
 
@@ -42,6 +35,7 @@ const EditUserPage = () => {
 
   const handleSubmit = async (values) => {
     try {
+      console.log("values", values);
       fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
         method: "PUT",
         headers: {
@@ -60,7 +54,6 @@ const EditUserPage = () => {
     } catch (error) {
       console.error(error);
     }
-    form.resetFields();
   };
 
   return loading ? (
@@ -68,7 +61,7 @@ const EditUserPage = () => {
       <Spin />
     </div>
   ) : (
-    <div className="flex flex-col justify-center items-center h-full gap-4">
+    <div className="flex flex-col justify-center items-center h-full gap-4 pt-32">
       <span className="flex items-center gap-4">
         <Button icon={<ArrowLeftOutlined />} href="/users" size="small" />
         <h1>
@@ -115,7 +108,7 @@ const EditUserPage = () => {
             },
           ]}
         >
-          <Input prefix={<MailOutlined />} placeholder="Nom d'utilisateur" />
+          <Input prefix={<UserOutlined />} placeholder="Nom d'utilisateur" />
         </Form.Item>
         <Form.Item
           name="mdp"
