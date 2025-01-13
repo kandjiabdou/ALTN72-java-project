@@ -40,5 +40,4 @@ public class RessourceController {
     public ResponseEntity<Object> supprimerRessource(@PathVariable Long id) {
         return ressourceService.supprimerRessource(id);
     }
-
 }

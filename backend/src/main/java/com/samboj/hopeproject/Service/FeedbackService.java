@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,5 +76,16 @@ public class FeedbackService {
                 "role", feedback.getUtilisateur().getRole()
         ));
         return feedbackResponse;
+    }
+
+    public ResponseEntity<Object> supprimerFeedback(Long feedbackId) {
+        Optional<Feedback> feedbackOptional = feedbackRepository.findById(feedbackId);
+
+        if (feedbackOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Feedback non trouvé avec l'ID : " + feedbackId);
+        }
+
+        feedbackRepository.deleteById(feedbackId);
+        return ResponseEntity.ok("Feedback supprimé avec succès.");
     }
 }
