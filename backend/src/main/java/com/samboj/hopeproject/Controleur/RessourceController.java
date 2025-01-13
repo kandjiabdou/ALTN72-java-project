@@ -40,9 +40,4 @@ public class RessourceController {
     public ResponseEntity<Object> supprimerRessource(@PathVariable Long id) {
         return ressourceService.supprimerRessource(id);
     }
-
-    @DeleteMapping("/feedback/{feedbackId}")
-    public ResponseEntity<Object> supprimerFeedback(@PathVariable Long feedbackId) {
-        return feedbackService.supprimerFeedback(feedbackId);
-    }
 }
