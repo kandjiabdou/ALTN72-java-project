@@ -21,7 +21,10 @@ public class Ressource {
     @NotBlank(message = "Une description simple est obligatoire.")
     private String descriptionSimple;
 
+    @Column(columnDefinition = "TEXT")
     private String descriptionDetaillee;
+
+    @Column(columnDefinition = "TEXT")
     private String acces;
 
     @NotBlank(message = "Le lien est obligatoire.")
