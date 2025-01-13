@@ -29,6 +29,7 @@ public class Ressource {
 
     private int limiteFeedBack = 5;
 
+    @Enumerated(EnumType.STRING)
     private Status status = Status.PROPOSE;
 
     private LocalDateTime dateCreation = LocalDateTime.now();
