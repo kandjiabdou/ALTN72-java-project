@@ -70,13 +70,21 @@ public class FeedbackService {
         Map<String, Object> feedbackResponse = new HashMap<>();
         feedbackResponse.put("id", feedback.getId());
         feedbackResponse.put("contenu", feedback.getContenu());
-        feedbackResponse.put("auteur", Map.of(
-                "id", feedback.getUtilisateur().getIdUser(),
-                "nom", feedback.getUtilisateur().getNom(),
-                "role", feedback.getUtilisateur().getRole()
-        ));
+
+        System.out.println(feedback.getUtilisateur().toString());
+        if (feedback.getUtilisateur() != null) {
+            feedbackResponse.put("auteur", Map.of(
+                    "id", feedback.getUtilisateur().getIdUser() == null ? "null" : feedback.getUtilisateur().getIdUser(),
+                    "nom", feedback.getUtilisateur().getNom() == null ? "null" : feedback.getUtilisateur().getNom(),
+                    "role", feedback.getUtilisateur().getRole() == null ? "null" : feedback.getUtilisateur().getRole()
+            ));
+        } else {
+            feedbackResponse.put("auteur", null); // ou une autre gestion si nécessaire
+        }
+
         return feedbackResponse;
     }
+
 
     public ResponseEntity<Object> supprimerFeedback(Long feedbackId) {
         Optional<Feedback> feedbackOptional = feedbackRepository.findById(feedbackId);
