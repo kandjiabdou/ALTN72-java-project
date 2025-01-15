@@ -27,7 +27,7 @@ public class Ressource {
     @Column(columnDefinition = "TEXT", length = 3000)
     private String descriptionDetaillee;
 
-    @Column(columnDefinition = "TEXT", length = 200)
+    @Column(columnDefinition = "TEXT", length = 1000)
     private String acces;
 
     @NotBlank(message = "Le lien est obligatoire.")
