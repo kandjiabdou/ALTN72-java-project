@@ -62,7 +62,7 @@ const EditRessourcePage = () => {
   let color = "green";
   if (status === "PROPOSE") {
     color = "orange";
-  } else if (status === "REFUSE") {
+  } else if (status === "REJETE") {
     color = "red";
   }
 
