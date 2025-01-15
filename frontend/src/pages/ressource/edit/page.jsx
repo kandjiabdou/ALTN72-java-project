@@ -127,7 +127,7 @@ const EditRessourcePage = () => {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify({ status: "REFUSE" }),
+                  body: JSON.stringify({ status: "PROPOSE" }),
                 }
               ).then((response) => {
                 if (response.ok) {
@@ -145,7 +145,7 @@ const EditRessourcePage = () => {
             size="small"
             color="danger"
             variant="outlined"
-            disabled={status === "REFUSE"}
+            disabled={status === "REJETE"}
             onClick={() => {
               fetch(
                 `${
@@ -157,7 +157,7 @@ const EditRessourcePage = () => {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify({ status: "REFUSE" }),
+                  body: JSON.stringify({ status: "REJETE" }),
                 }
               ).then((response) => {
                 if (response.ok) {
