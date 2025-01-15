@@ -27,19 +27,21 @@ public class UtilisateurController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<Object> recupererUtilisateurActuel(
-            @RequestHeader(value = "Authorization", required = true) String authorizationHeader) {
+    public ResponseEntity<Object> recupererUtilisateurActuel(@RequestHeader("Authorization") String authorizationHeader) {
+        HopeProjectApplication.LOGGER.info("Récupération de l'utilisateur actuel");
 
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            return utilisateurService.createErrorResponse(HttpStatus.UNAUTHORIZED, "Token manquant ou invalide.");
+        // Déplacement de la logique de validation dans le service ou un filtre
+        if (!authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token manquant ou invalide.");
         }
 
-        String token = authorizationHeader.substring(7); // Supprimer "Bearer " pour obtenir le token
+        String token = authorizationHeader.substring(7);
         return utilisateurService.recupererUtilisateurActuel(token);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUtilisateurParId(@PathVariable Long id) {
+        HopeProjectApplication.LOGGER.info("Récupération de l'utilisateur avec ID : {}", id);
         return utilisateurService.recupererUtilisateurParId(id);
     }
 
@@ -50,20 +52,20 @@ public class UtilisateurController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> modifierUtilisateur(@PathVariable Long id, @Valid @RequestBody UtilisateurDto utilisateur) {
-        return utilisateurService.modifierUtilisateur(id, utilisateur);
+    public ResponseEntity<Object> modifierUtilisateur(@PathVariable Long id, @Valid @RequestBody UtilisateurDto utilisateurDto) {
+        HopeProjectApplication.LOGGER.info("Modification de l'utilisateur avec ID : {}", id);
+        return utilisateurService.modifierUtilisateur(id, utilisateurDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> supprimerUtilisateur(@PathVariable Long id) {
-        HopeProjectApplication.LOGGER.info("Suppression d'un utilisateur avec ID : {}", id);
+        HopeProjectApplication.LOGGER.info("Suppression de l'utilisateur avec ID : {}", id);
         return utilisateurService.supprimerUtilisateur(id);
     }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody Map<String, String> credentials) {
-        String login = credentials.get("login");
-        String mdp = credentials.get("mdp");
-        return utilisateurService.login(login, mdp);
+        HopeProjectApplication.LOGGER.info("Tentative de connexion pour le login : {}", credentials.get("login"));
+        return utilisateurService.login(credentials.get("login"), credentials.get("mdp"));
     }
 }

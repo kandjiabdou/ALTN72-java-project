@@ -3,6 +3,7 @@ package com.samboj.hopeproject.Modele;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +15,7 @@ public class Feedback {
     private Long id;
 
     @NotBlank(message = "Le contenu du feedback est obligatoire.")
+    @Size(max = 1000, message = "Le contenu du feedback ne doit pas dépasser 1000 caractères.")
     private String contenu;
 
     @ManyToOne
@@ -24,7 +26,13 @@ public class Feedback {
     @JoinColumn(name = "ressource_id", nullable = false)
     private Ressource ressource;
 
-    private LocalDateTime dateCreation = LocalDateTime.now();
+    @Column(updatable = false)
+    private LocalDateTime dateCreation;
+
+    @PrePersist
+    public void prePersist() {
+        this.dateCreation = LocalDateTime.now();
+    }
 
     // Getters et Setters
     public Long getId() {

@@ -3,6 +3,8 @@ package com.samboj.hopeproject.Modele;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,25 +15,25 @@ public class Ressource {
     private Long id;
 
     @NotBlank(message = "Le titre est obligatoire.")
-    @Column(length = 255)
+    @Size(max = 255, message = "Le titre ne doit pas dépasser 255 caractères.")
     private String titre;
 
     @NotBlank(message = "Le domaine est obligatoire.")
-    @Column(length = 255)
+    @Size(max = 255, message = "Le domaine ne doit pas dépasser 255 caractères.")
     private String domaine;
 
     @NotBlank(message = "Une description simple est obligatoire.")
-    @Column(length = 2000)
+    @Size(max = 2000, message = "La description simple ne doit pas dépasser 2000 caractères.")
     private String descriptionSimple;
 
-    @Column(columnDefinition = "TEXT", length = 3000)
+    @Size(max = 3000, message = "La description détaillée ne doit pas dépasser 3000 caractères.")
     private String descriptionDetaillee;
 
-    @Column(columnDefinition = "TEXT", length = 1000)
+    @Size(max = 1000, message = "Le champ 'Acces' ne doit pas dépasser 1000 caractères.")
     private String acces;
 
     @NotBlank(message = "Le lien est obligatoire.")
-    @Column(length = 500)
+    @Size(max = 500, message = "Le lien ne doit pas dépasser 500 caractères.")
     private String lien;
 
     private int limiteFeedBack = 5;
@@ -42,25 +44,17 @@ public class Ressource {
 
     private LocalDateTime dateCreation = LocalDateTime.now();
 
+    @PrePersist
+    public void prePersist() {
+        this.dateDerniereModification = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.dateDerniereModification = LocalDateTime.now();
+    }
+
     private LocalDateTime dateDerniereModification;
-
-    public enum Status {
-        VALIDE, PROPOSE, REJETE
-    }
-
-    // Constructeurs
-    public Ressource() {}
-
-    public Ressource(String titre, String domaine, String descriptionSimple, String descriptionDetaillee, String lien, int limiteFeedBack, Status status) {
-        this.titre = titre;
-        this.domaine = domaine;
-        this.descriptionSimple = descriptionSimple;
-        this.descriptionDetaillee = descriptionDetaillee;
-        this.lien = lien;
-        this.limiteFeedBack = limiteFeedBack;
-        this.status = status;
-        this.dateCreation = LocalDateTime.now();
-    }
 
     public Long getId() {
         return id;
@@ -69,6 +63,13 @@ public class Ressource {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public enum Status {
+        VALIDE, PROPOSE, REJETE
+    }
+
+    // Constructeurs
+    public Ressource() {}
 
     public String getTitre() {
         return titre;
