@@ -38,7 +38,7 @@ const TableComponent = ({ data }) => {
         let color = "green";
         if (status === "PROPOSE") {
           color = "orange";
-        } else if (status === "REFUSE") {
+        } else if (status === "REJETE") {
           color = "red";
         }
         return <Tag color={color}>{status}</Tag>;

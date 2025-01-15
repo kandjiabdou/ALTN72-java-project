@@ -1,8 +1,10 @@
 package com.samboj.hopeproject.Modele;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 
 @Entity
@@ -10,17 +12,27 @@ public class Utilisateur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idUser;
+    private Long idUser; // Renomme pour plus de cohérence
+
+    @NotBlank(message = "Le prénom est obligatoire.")
+    @Size(max = 50, message = "Le prénom ne doit pas dépasser 50 caractères.")
     private String prenom;
+
+    @NotBlank(message = "Le nom est obligatoire.")
+    @Size(max = 50, message = "Le nom ne doit pas dépasser 50 caractères.")
     private String nom;
 
     @NotNull(message = "Le champ 'login' est obligatoire.")
+    @Column(unique = true, length = 100) // Pour garantir unicite et limitation de taille
     private String login;
 
     @NotNull(message = "Le champ 'mdp' est obligatoire.")
+    @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères.")
     private String mdp;
 
-    @Enumerated(EnumType.STRING) @NotNull(message = "Le champ 'role' est obligatoire.")
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Le rôle est obligatoire.")
+    @Column(length = 20)
     private Role role;
 
     public enum Role {
@@ -33,7 +45,7 @@ public class Utilisateur {
         return idUser;
     }
 
-    public void setIdUser(Long idUser) {
+    public void setId(Long idUser) {
         this.idUser = idUser;
     }
 
@@ -76,16 +88,4 @@ public class Utilisateur {
     public void setRole(Role role) {
         this.role = role;
     }
-    @Override
-    public String toString() {
-        return "Utilisateur{" +
-                "idUser=" + idUser +
-                ", prenom='" + prenom + '\'' +
-                ", nom='" + nom + '\'' +
-                ", login='" + login + '\'' +
-                ", role=" + role +
-                '}';
-    }
-
 }
-
