@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message } from "antd";
 
 const LoginPage = () => {
@@ -19,8 +19,8 @@ const LoginPage = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("data", data)
-        localStorage.setItem("token",data.token)
+        console.log("data", data);
+        localStorage.setItem("token", data.token);
         window.location.href = "/";
         message.success("Connexion réussie");
       } else {
@@ -37,18 +37,18 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center items-center h-full pt-32">
       <Form name="login" onFinish={onFinish}>
         <Form.Item
           name="login"
           rules={[
             {
               required: true,
-              message: "Veuillez entrer un email !",
+              message: "Veuillez entrer un nom d'utilisateur !",
             },
           ]}
         >
-          <Input prefix={<MailOutlined />} placeholder="Email" />
+          <Input prefix={<UserOutlined />} placeholder="Nom d'utilisateur" />
         </Form.Item>
         <Form.Item
           name="mdp"

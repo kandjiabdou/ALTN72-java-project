@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -167,32 +168,54 @@ public class UtilisateurService {
 
     public ResponseEntity<Object> modifierUtilisateur(Long id, UtilisateurDto utilisateur) {
         logger.info("Modification de l'utilisateur avec l'ID: {}", id);
-        Optional<Utilisateur> utilisateurExistant = utilisateurRepository.findById(id);
-        if (!utilisateurExistant.isPresent()) {
-            logger.warn("Utilisateur avec l'ID {} introuvable", id);
-            return createErrorResponse(HttpStatus.NOT_FOUND, "Utilisateur introuvable avec l'ID: " + id);
+
+        // Vérification de l'existence de l'utilisateur
+        Utilisateur utilisateurAMettreAJour = utilisateurRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.warn("Utilisateur avec l'ID {} introuvable", id);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur introuvable avec l'ID: " + id);
+                });
+
+        // Vérification que le DTO contient des données valides
+        if (utilisateur == null || isEmptyUtilisateurDto(utilisateur)) {
+            logger.warn("Aucun champ valide fourni pour la modification de l'utilisateur avec l'ID {}", id);
+            return createErrorResponse(HttpStatus.BAD_REQUEST, "Aucun champ valide fourni pour la mise à jour.");
         }
 
-        Utilisateur utilisateurAMettreAJour = utilisateurExistant.get();
+        // Mise à jour des champs fournis
+        updateUtilisateurFields(utilisateurAMettreAJour, utilisateur);
 
-        // Mise à jour des champs fournis dans le DTO
+        // Enregistrement de l'utilisateur mis à jour
+        utilisateurRepository.save(utilisateurAMettreAJour);
+        logger.info("Utilisateur avec l'ID {} modifié avec succès", id);
+
+        // Retourne l'utilisateur mis à jour avec le mot de passe masqué
+        return ResponseEntity.ok(maskPassword(utilisateurAMettreAJour));
+    }
+
+    private boolean isEmptyUtilisateurDto(UtilisateurDto utilisateur) {
+        return utilisateur.getLogin() == null &&
+                (utilisateur.getMdp() == null || utilisateur.getMdp().isBlank()) &&
+                utilisateur.getRole() == null &&
+                utilisateur.getNom() == null &&
+                utilisateur.getPrenom() == null;
+    }
+    private void updateUtilisateurFields(Utilisateur utilisateurAMettreAJour, UtilisateurDto utilisateur) {
         if (utilisateur.getLogin() != null) {
             utilisateurAMettreAJour.setLogin(utilisateur.getLogin());
         }
         if (utilisateur.getMdp() != null && !utilisateur.getMdp().isBlank()) {
-            // Hashage du mot de passe avant de le mettre à jour
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             utilisateurAMettreAJour.setMdp(passwordEncoder.encode(utilisateur.getMdp()));
         }
         if (utilisateur.getRole() != null) {
             utilisateurAMettreAJour.setRole(utilisateur.getRole());
         }
-
-        // Enregistrement de l'utilisateur mis à jour dans la base de données
-        Utilisateur utilisateurMisAJour = utilisateurRepository.save(utilisateurAMettreAJour);
-        logger.info("Utilisateur avec l'ID {} modifié avec succès", id);
-
-        // Retourne l'utilisateur mis à jour avec le mot de passe masqué
-        return ResponseEntity.ok(maskPassword(utilisateurMisAJour));
+        if (utilisateur.getNom() != null) {
+            utilisateurAMettreAJour.setNom(utilisateur.getNom());
+        }
+        if (utilisateur.getPrenom() != null) {
+            utilisateurAMettreAJour.setPrenom(utilisateur.getPrenom());
+        }
     }
 }
