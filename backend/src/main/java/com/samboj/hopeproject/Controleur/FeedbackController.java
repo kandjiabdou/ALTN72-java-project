@@ -26,4 +26,9 @@ public class FeedbackController {
             @RequestBody Feedback feedback) {
         return feedbackService.ajouterFeedback(ressourceId, utilisateurId, feedback);
     }
+
+    @DeleteMapping("/feedback/{feedbackId}")
+    public ResponseEntity<Object> supprimerFeedback(@PathVariable Long feedbackId) {
+        return feedbackService.supprimerFeedback(feedbackId);
+    }
 }
