@@ -7,8 +7,11 @@ import com.samboj.hopeproject.Repository.UtilisateurRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.PostConstruct;
 import java.io.InputStream;
@@ -17,7 +20,10 @@ import java.time.LocalDateTime;
 import static com.samboj.hopeproject.Modele.Utilisateur.Role.*;
 
 @Component
+@Order(1)  // Assure que cet initializer s'exécute en premier
 public class DatabaseInitializer {
+
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseInitializer.class);
 
     @Autowired
     private RessourceRepository ressourceRepository;
@@ -27,6 +33,7 @@ public class DatabaseInitializer {
 
     @PostConstruct
     public void initDatabase() {
+        logger.info("Début de l'initialisation de la base de données...");
         try {
             // Charger et lire le fichier Excel
             InputStream inputStream = getClass().getResourceAsStream("/ressources.xlsx");
@@ -54,8 +61,10 @@ public class DatabaseInitializer {
 
             workbook.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Erreur lors de l'initialisation de la base de données", e);
+            throw new RuntimeException("Échec de l'initialisation de la base de données", e);
         }
+        logger.info("Initialisation de la base de données terminée avec succès");
 
         // Création des utilisateurs
         if (utilisateurRepository.count() == 0) { // Éviter de recréer si déjà existants
