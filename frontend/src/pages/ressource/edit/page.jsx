@@ -10,14 +10,12 @@ import { useNavigate } from "react-router-dom";
 import { Tag } from "antd";
 const EditRessourcePage = () => {
   const [form] = Form.useForm();
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   const ressourceId = useParams().id;
-
-  let status = "";
-  let color = "green";
 
   const getData = async () => {
     fetch(`${import.meta.env.VITE_API_URL}/ressources/${ressourceId}`, {
@@ -26,16 +24,9 @@ const EditRessourcePage = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => {
-        form.setFieldsValue(data);
-        status = data.status;
-        color = "green";
-        if (status === "PROPOSE") {
-          color = "orange";
-        } else if (status === "REJETE") {
-          color = "red";
-        }
-
+      .then((d) => {
+        form.setFieldsValue(d);
+        setData(d);
         setLoading(false);
       })
       .catch((error) => {
@@ -81,7 +72,17 @@ const EditRessourcePage = () => {
           Modifier la ressource {form.getFieldValue("titre")}{" "}
           {form.getFieldValue("nom")}
         </h1>
-        <Tag color={color}>{status}</Tag>
+        <Tag
+          color={
+            data.status === "VALIDE"
+              ? "green"
+              : data.status === "PROPOSE"
+              ? "orange"
+              : "red"
+          }
+        >
+          {data.status}
+        </Tag>
       </span>
 
       <span className="flex flex-col items-center gap-4">
@@ -90,7 +91,7 @@ const EditRessourcePage = () => {
             size="small"
             color="primary"
             variant="outlined"
-            disabled={status === "VALIDE"}
+            disabled={data.status === "VALIDE"}
             onClick={() => {
               fetch(
                 `${
@@ -120,7 +121,7 @@ const EditRessourcePage = () => {
             size="small"
             color="primary"
             variant="outlined"
-            disabled={status === "PROPOSE"}
+            disabled={data.status === "PROPOSE"}
             onClick={() => {
               fetch(
                 `${
@@ -150,7 +151,7 @@ const EditRessourcePage = () => {
             size="small"
             color="danger"
             variant="outlined"
-            disabled={status === "REJETE"}
+            disabled={data.status === "REJETE"}
             onClick={() => {
               fetch(
                 `${
