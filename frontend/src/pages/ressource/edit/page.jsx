@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from "react";
 import { message, Form, Input, Button } from "antd";
@@ -9,11 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { Tag } from "antd";
 const EditRessourcePage = () => {
   const [form] = Form.useForm();
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   const ressourceId = useParams().id;
+
   const getData = async () => {
     fetch(`${import.meta.env.VITE_API_URL}/ressources/${ressourceId}`, {
       headers: {
@@ -21,8 +24,9 @@ const EditRessourcePage = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => {
-        form.setFieldsValue(data);
+      .then((d) => {
+        form.setFieldsValue(d);
+        setData(d);
         setLoading(false);
       })
       .catch((error) => {
@@ -58,24 +62,6 @@ const EditRessourcePage = () => {
     navigate("/");
   };
 
-  const [status, setStatus] = useState("VALIDE");
-  const [color, setColor] = useState("green");
-  const setStatusAndColor = () => {
-    const tempstatus = form.getFieldValue("status");
-    let tempcolor = "green";
-    if (tempstatus === "PROPOSE") {
-      tempcolor = "orange";
-    } else if (tempstatus === "REJETE") {
-      tempcolor = "red";
-    }
-    setStatus(tempstatus);
-    setColor(tempcolor);
-  };
-
-  useEffect(() => {
-    setStatusAndColor();
-  }, [form]);
-
   return loading ? (
     <Loader />
   ) : (
@@ -86,7 +72,17 @@ const EditRessourcePage = () => {
           Modifier la ressource {form.getFieldValue("titre")}{" "}
           {form.getFieldValue("nom")}
         </h1>
-        <Tag color={color}>{status}</Tag>
+        <Tag
+          color={
+            data.status === "VALIDE"
+              ? "green"
+              : data.status === "PROPOSE"
+              ? "orange"
+              : "red"
+          }
+        >
+          {data.status}
+        </Tag>
       </span>
 
       <span className="flex flex-col items-center gap-4">
@@ -95,7 +91,7 @@ const EditRessourcePage = () => {
             size="small"
             color="primary"
             variant="outlined"
-            disabled={status === "VALIDE"}
+            disabled={data.status === "VALIDE"}
             onClick={() => {
               fetch(
                 `${
@@ -109,11 +105,10 @@ const EditRessourcePage = () => {
                   },
                   body: JSON.stringify({ status: "VALIDE" }),
                 }
-              ).then(async (response) => {
+              ).then((response) => {
                 if (response.ok) {
                   message.success("Ressource validée avec succès");
-                  await getData();
-                  setStatusAndColor();
+                  getData();
                 } else {
                   message.error("Erreur lors de la validation de la ressource");
                 }
@@ -126,7 +121,7 @@ const EditRessourcePage = () => {
             size="small"
             color="primary"
             variant="outlined"
-            disabled={status === "PROPOSE"}
+            disabled={data.status === "PROPOSE"}
             onClick={() => {
               fetch(
                 `${
@@ -140,11 +135,10 @@ const EditRessourcePage = () => {
                   },
                   body: JSON.stringify({ status: "PROPOSE" }),
                 }
-              ).then(async (response) => {
+              ).then((response) => {
                 if (response.ok) {
                   message.success("Ressource refusée avec succès");
-                  await getData();
-                  setStatusAndColor();
+                  getData();
                 } else {
                   message.error("Erreur lors du refus de la ressource");
                 }
@@ -157,7 +151,7 @@ const EditRessourcePage = () => {
             size="small"
             color="danger"
             variant="outlined"
-            disabled={status === "REJETE"}
+            disabled={data.status === "REJETE"}
             onClick={() => {
               fetch(
                 `${
@@ -171,11 +165,10 @@ const EditRessourcePage = () => {
                   },
                   body: JSON.stringify({ status: "REJETE" }),
                 }
-              ).then(async (response) => {
+              ).then((response) => {
                 if (response.ok) {
                   message.success("Ressource refusée avec succès");
-                  await getData();
-                  setStatusAndColor();
+                  getData();
                 } else {
                   message.error("Erreur lors du refus de la ressource");
                 }
