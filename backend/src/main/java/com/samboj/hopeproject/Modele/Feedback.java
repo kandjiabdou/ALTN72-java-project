@@ -2,7 +2,6 @@ package com.samboj.hopeproject.Modele;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
@@ -39,9 +38,6 @@ public class Feedback {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getContenu() {
         return contenu;
@@ -59,9 +55,6 @@ public class Feedback {
         this.utilisateur = utilisateur;
     }
 
-    public Ressource getRessource() {
-        return ressource;
-    }
 
     public void setRessource(Ressource ressource) {
         this.ressource = ressource;
