@@ -58,13 +58,23 @@ const EditRessourcePage = () => {
     navigate("/");
   };
 
-  const status = form.getFieldValue("status");
-  let color = "green";
-  if (status === "PROPOSE") {
-    color = "orange";
-  } else if (status === "REJETE") {
-    color = "red";
-  }
+  const [status, setStatus] = useState("VALIDE");
+  const [color, setColor] = useState("green");
+  const setStatusAndColor = () => {
+    const tempstatus = form.getFieldValue("status");
+    let tempcolor = "green";
+    if (tempstatus === "PROPOSE") {
+      tempcolor = "orange";
+    } else if (tempstatus === "REJETE") {
+      tempcolor = "red";
+    }
+    setStatus(tempstatus);
+    setColor(tempcolor);
+  };
+
+  useEffect(() => {
+    setStatusAndColor();
+  }, [form]);
 
   return loading ? (
     <Loader />
@@ -99,10 +109,11 @@ const EditRessourcePage = () => {
                   },
                   body: JSON.stringify({ status: "VALIDE" }),
                 }
-              ).then((response) => {
+              ).then(async (response) => {
                 if (response.ok) {
                   message.success("Ressource validée avec succès");
-                  getData();
+                  await getData();
+                  setStatusAndColor();
                 } else {
                   message.error("Erreur lors de la validation de la ressource");
                 }
@@ -129,10 +140,11 @@ const EditRessourcePage = () => {
                   },
                   body: JSON.stringify({ status: "PROPOSE" }),
                 }
-              ).then((response) => {
+              ).then(async (response) => {
                 if (response.ok) {
                   message.success("Ressource refusée avec succès");
-                  getData();
+                  await getData();
+                  setStatusAndColor();
                 } else {
                   message.error("Erreur lors du refus de la ressource");
                 }
@@ -159,10 +171,11 @@ const EditRessourcePage = () => {
                   },
                   body: JSON.stringify({ status: "REJETE" }),
                 }
-              ).then((response) => {
+              ).then(async (response) => {
                 if (response.ok) {
                   message.success("Ressource refusée avec succès");
-                  getData();
+                  await getData();
+                  setStatusAndColor();
                 } else {
                   message.error("Erreur lors du refus de la ressource");
                 }

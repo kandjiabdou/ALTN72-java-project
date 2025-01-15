@@ -129,8 +129,24 @@ const RessourcePage = () => {
                                 },
                               }
                             )
-                              .then((response) => response.json())
-                              .then((data) => console.log(data));
+                              .then((response) => {
+                                if (response.ok) {
+                                  message.success(
+                                    "Feedback supprimé avec succès"
+                                  );
+                                  getFeedbacks();
+                                } else {
+                                  message.error(
+                                    "Erreur lors de la suppression du feedback"
+                                  );
+                                }
+                              })
+                              .catch((error) => {
+                                console.error(error);
+                                message.error(
+                                  "Erreur lors de la suppression du feedback"
+                                );
+                              });
                           }}
                         />
                       )}
