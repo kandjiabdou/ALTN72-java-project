@@ -42,7 +42,7 @@ public class RessourceController {
         return ressourceService.supprimerRessource(id);
     }
 
-    @PutMapping("/status/{id}")
+    @PutMapping("/statut/{id}")
     public ResponseEntity<Object> changerStatusRessource(
             @PathVariable Long id,
             @RequestBody Map<String, String> body) {
