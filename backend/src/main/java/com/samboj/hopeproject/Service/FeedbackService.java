@@ -43,8 +43,8 @@ public class FeedbackService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> ajouterFeedback(Long ressourceId, Long utilisateurId, Feedback feedback) {
-        Ressource ressource = ressourceRepository.findById(ressourceId).orElse(null);
+    public ResponseEntity<Object> ajouterFeedback(Long id, Long utilisateurId, Feedback feedback) {
+        Ressource ressource = ressourceRepository.findById(id).orElse(null);
         if (ressource == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ressource introuvable.");
         }
