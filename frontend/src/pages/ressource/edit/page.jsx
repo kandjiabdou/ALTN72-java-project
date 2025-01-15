@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from "react";
 import { message, Form, Input, Button } from "antd";
@@ -14,6 +15,10 @@ const EditRessourcePage = () => {
   const navigate = useNavigate();
 
   const ressourceId = useParams().id;
+
+  let status = "";
+  let color = "green";
+
   const getData = async () => {
     fetch(`${import.meta.env.VITE_API_URL}/ressources/${ressourceId}`, {
       headers: {
@@ -23,6 +28,14 @@ const EditRessourcePage = () => {
       .then((response) => response.json())
       .then((data) => {
         form.setFieldsValue(data);
+        status = data.status;
+        color = "green";
+        if (status === "PROPOSE") {
+          color = "orange";
+        } else if (status === "REJETE") {
+          color = "red";
+        }
+
         setLoading(false);
       })
       .catch((error) => {
@@ -58,24 +71,6 @@ const EditRessourcePage = () => {
     navigate("/");
   };
 
-  const [status, setStatus] = useState("VALIDE");
-  const [color, setColor] = useState("green");
-  const setStatusAndColor = () => {
-    const tempstatus = form.getFieldValue("status");
-    let tempcolor = "green";
-    if (tempstatus === "PROPOSE") {
-      tempcolor = "orange";
-    } else if (tempstatus === "REJETE") {
-      tempcolor = "red";
-    }
-    setStatus(tempstatus);
-    setColor(tempcolor);
-  };
-
-  useEffect(() => {
-    setStatusAndColor();
-  }, [form]);
-
   return loading ? (
     <Loader />
   ) : (
@@ -109,11 +104,10 @@ const EditRessourcePage = () => {
                   },
                   body: JSON.stringify({ status: "VALIDE" }),
                 }
-              ).then(async (response) => {
+              ).then((response) => {
                 if (response.ok) {
                   message.success("Ressource validée avec succès");
-                  await getData();
-                  setStatusAndColor();
+                  getData();
                 } else {
                   message.error("Erreur lors de la validation de la ressource");
                 }
@@ -140,11 +134,10 @@ const EditRessourcePage = () => {
                   },
                   body: JSON.stringify({ status: "PROPOSE" }),
                 }
-              ).then(async (response) => {
+              ).then((response) => {
                 if (response.ok) {
                   message.success("Ressource refusée avec succès");
-                  await getData();
-                  setStatusAndColor();
+                  getData();
                 } else {
                   message.error("Erreur lors du refus de la ressource");
                 }
@@ -171,11 +164,10 @@ const EditRessourcePage = () => {
                   },
                   body: JSON.stringify({ status: "REJETE" }),
                 }
-              ).then(async (response) => {
+              ).then((response) => {
                 if (response.ok) {
                   message.success("Ressource refusée avec succès");
-                  await getData();
-                  setStatusAndColor();
+                  getData();
                 } else {
                   message.error("Erreur lors du refus de la ressource");
                 }
