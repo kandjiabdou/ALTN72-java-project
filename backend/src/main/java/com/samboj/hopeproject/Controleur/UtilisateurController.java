@@ -23,7 +23,7 @@ public class UtilisateurController {
     @GetMapping
     public ResponseEntity<?> recupererTousLesUtilisateurs() {
         HopeProjectApplication.LOGGER.info("Récupération de tous les utilisateurs");
-        return utilisateurService.recupererTousLesUtilisateurs();
+        return utilisateurService.getAllUtilisateurs();
     }
 
     @GetMapping("/me")
@@ -36,13 +36,13 @@ public class UtilisateurController {
         }
 
         String token = authorizationHeader.substring(7);
-        return utilisateurService.recupererUtilisateurActuel(token);
+        return utilisateurService.getUtilisateurActuel(token);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUtilisateurParId(@PathVariable Long id) {
         HopeProjectApplication.LOGGER.info("Récupération de l'utilisateur avec ID : {}", id);
-        return utilisateurService.recupererUtilisateurParId(id);
+        return utilisateurService.getUtilisateurById(id);
     }
 
     @PostMapping

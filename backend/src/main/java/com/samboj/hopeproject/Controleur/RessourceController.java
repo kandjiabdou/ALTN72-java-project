@@ -22,37 +22,37 @@ public class RessourceController {
     @GetMapping
     public ResponseEntity<List<Ressource>> recupererToutesLesRessources() {
         HopeProjectApplication.LOGGER.info("Récupération de toutes les ressources");
-        return ressourceService.recupererToutesLesRessources();
+        return ressourceService.getAllRessources();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> recupererRessourceParId(@PathVariable Long id) {
         HopeProjectApplication.LOGGER.info("Récupération de la ressource avec ID : {}", id);
-        return ressourceService.recupererRessourceParId(id);
+        return ressourceService.getRessourceById(id);
     }
 
     @PostMapping
     public ResponseEntity<Object> ajouterRessource(@Valid @RequestBody Ressource ressource) {
         HopeProjectApplication.LOGGER.info("Ajout d'une nouvelle ressource : {}", ressource);
-        return ressourceService.ajouterRessource(ressource);
+        return ressourceService.createRessource(ressource);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> modifierRessource(@PathVariable Long id, @Valid @RequestBody Ressource ressource) {
         HopeProjectApplication.LOGGER.info("Modification de la ressource avec ID : {}", id);
-        return ressourceService.modifierRessource(id, ressource);
+        return ressourceService.updateRessource(id, ressource);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> supprimerRessource(@PathVariable Long id) {
         HopeProjectApplication.LOGGER.info("Suppression de la ressource avec ID : {}", id);
-        return ressourceService.supprimerRessource(id);
+        return ressourceService.deleteRessource(id);
     }
 
     @PutMapping("/statut/{id}")
     public ResponseEntity<Object> changerStatusRessource(@PathVariable Long id, @RequestBody Map<String, String> body) {
         String status = body.get("status");
         HopeProjectApplication.LOGGER.info("Changement de statut de la ressource avec ID : {} en {}", id, status);
-        return ressourceService.changerStatusRessource(id, status);
+        return ressourceService.changeRessourceStatus(id, status);
     }
 }

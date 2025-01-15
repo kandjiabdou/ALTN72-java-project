@@ -4,9 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
@@ -32,10 +33,19 @@ public class GlobalExceptionHandler {
         return createErrorResponse(HttpStatus.BAD_REQUEST, message);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage())
+        );
+        return ResponseEntity.badRequest().body(errors);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception ex) {
         logger.error("Erreur inattendue : {}", ex.getMessage(), ex);
-        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erreur inattendue.");
+        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erreur : "+ex.getMessage());
     }
 
     private ResponseEntity<Object> createErrorResponse(HttpStatus status, String message) {
@@ -44,4 +54,19 @@ public class GlobalExceptionHandler {
         response.put("message", message);
         return ResponseEntity.status(status).body(response);
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public static class RessourceNotFoundException extends RuntimeException {
+        public RessourceNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public static class InvalidStatusException extends RuntimeException {
+        public InvalidStatusException(String message) {
+            super(message);
+        }
+    }
+
 }

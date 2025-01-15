@@ -1,5 +1,6 @@
 package com.samboj.hopeproject.Service;
 
+import com.samboj.hopeproject.Exception.GlobalExceptionHandler.*;
 import com.samboj.hopeproject.Modele.Ressource;
 import com.samboj.hopeproject.Repository.RessourceRepository;
 import org.slf4j.Logger;
@@ -20,90 +21,77 @@ public class RessourceService {
     @Autowired
     private RessourceRepository ressourceRepository;
 
-    public ResponseEntity<List<Ressource>> recupererToutesLesRessources() {
-        logger.info("Récupération de toutes les ressources");
+    public ResponseEntity<List<Ressource>> getAllRessources() {
+        logger.info("Fetching all ressources");
         List<Ressource> ressources = ressourceRepository.findAll();
         return ResponseEntity.ok(ressources);
     }
 
-    public ResponseEntity<Object> recupererRessourceParId(Long id) {
-        logger.info("Recherche d'une ressource avec l'ID: {}", id);
-        Optional<Ressource> ressource = ressourceRepository.findById(id);
-        if (ressource.isPresent()) {
-            return ResponseEntity.ok(ressource.get());
-        } else {
-            logger.warn("Ressource avec l'ID {} introuvable", id);
-            return createErrorResponse(HttpStatus.NOT_FOUND, "Ressource introuvable avec l'ID: " + id);
-        }
+    public ResponseEntity<Object> getRessourceById(Long id) {
+        logger.info("Fetching ressource with ID: {}", id);
+        Ressource ressource = ressourceRepository.findById(id)
+                .orElseThrow(() -> new RessourceNotFoundException("Ressource not found with ID: " + id));
+        return ResponseEntity.ok(ressource);
     }
 
-    public ResponseEntity<Object> ajouterRessource(Ressource ressource) {
-        logger.info("Ajout d'une nouvelle ressource avec le titre: {}", ressource.getTitre());
-        Ressource nouvelleRessource = ressourceRepository.save(ressource);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nouvelleRessource);
+    public ResponseEntity<Object> createRessource(Ressource ressource) {
+        logger.info("Adding new ressource with title: {}", ressource.getTitre());
+        Ressource savedRessource = ressourceRepository.save(ressource);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedRessource);
     }
 
-    public ResponseEntity<Object> modifierRessource(Long id, Ressource ressource) {
-        logger.info("Modification de la ressource avec l'ID: {}", id);
-        Optional<Ressource> ressourceExistant = ressourceRepository.findById(id);
-        if (!ressourceExistant.isPresent()) {
-            logger.warn("Ressource avec l'ID {} introuvable", id);
-            return createErrorResponse(HttpStatus.NOT_FOUND, "Ressource introuvable avec l'ID: " + id);
-        }
+    public ResponseEntity<Object> updateRessource(Long id, Ressource ressource) {
+        logger.info("Updating ressource with ID: {}", id);
 
-        Ressource ressourceAMettreAJour = ressourceExistant.get();
-        if (ressource.getTitre() != null) ressourceAMettreAJour.setTitre(ressource.getTitre());
-        if (ressource.getDomaine() != null) ressourceAMettreAJour.setDomaine(ressource.getDomaine());
-        if (ressource.getDescriptionSimple() != null) ressourceAMettreAJour.setDescriptionSimple(ressource.getDescriptionSimple());
-        if (ressource.getDescriptionDetaillee() != null) ressourceAMettreAJour.setDescriptionDetaillee(ressource.getDescriptionDetaillee());
-        if (ressource.getAcces() != null) ressourceAMettreAJour.setAcces(ressource.getAcces());
-        if (ressource.getLien() != null) ressourceAMettreAJour.setLien(ressource.getLien());
-        if (ressource.getStatus() != null) ressourceAMettreAJour.setStatus(ressource.getStatus());
-        if (ressource.getLimiteFeedBack() != 0) ressourceAMettreAJour.setLimiteFeedBack(ressource.getLimiteFeedBack());
+        Ressource existingRessource = ressourceRepository.findById(id)
+                .orElseThrow(() -> new RessourceNotFoundException("Ressource not found with ID: " + id));
 
-        Ressource ressourceModifiee = ressourceRepository.save(ressourceAMettreAJour);
-        logger.info("Ressource avec l'ID {} modifiée avec succès", id);
-        return ResponseEntity.ok(ressourceModifiee);
+        updateRessourceFields(existingRessource, ressource);
+
+        Ressource updatedRessource = ressourceRepository.save(existingRessource);
+        logger.info("Ressource with ID {} updated successfully", id);
+        return ResponseEntity.ok(updatedRessource);
     }
 
-    public ResponseEntity<Object> supprimerRessource(Long id) {
-        logger.info("Suppression de la ressource avec l'ID: {}", id);
+    public ResponseEntity<Object> deleteRessource(Long id) {
+        logger.info("Deleting ressource with ID: {}", id);
+
         if (!ressourceRepository.existsById(id)) {
-            logger.warn("Échec - Ressource avec l'ID {} introuvable", id);
-            return createErrorResponse(HttpStatus.NOT_FOUND, "Ressource introuvable avec l'ID: " + id);
+            logger.warn("Deletion failed - Ressource not found with ID: {}", id);
+            throw new RessourceNotFoundException("Ressource not found with ID: " + id);
         }
 
         ressourceRepository.deleteById(id);
-        logger.info("Ressource avec l'ID {} supprimée avec succès.", id);
+        logger.info("Ressource with ID {} deleted successfully", id);
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
-        response.put("message", "Ressource supprimée avec succès.");
+        response.put("message", "Ressource deleted successfully");
         return ResponseEntity.ok(response);
     }
 
-    private ResponseEntity<Object> createErrorResponse(HttpStatus status, String message) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", status.value());
-        response.put("message", message);
-        return ResponseEntity.status(status).body(response);
-    }
+    public ResponseEntity<Object> changeRessourceStatus(Long id, String status) {
+        Ressource ressource = ressourceRepository.findById(id)
+                .orElseThrow(() -> new RessourceNotFoundException("Ressource not found with ID: " + id));
 
-    public ResponseEntity<Object> changerStatusRessource(Long id, String status) {
-        Optional<Ressource> ressourceOptional = ressourceRepository.findById(id);
-
-        if (ressourceOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ressource non trouvée avec l'ID : " + id);
-        }
-
-        Ressource ressource = ressourceOptional.get();
         try {
-            Ressource.Status nouveauStatus = Ressource.Status.valueOf(status.toUpperCase());
-            ressource.setStatus(nouveauStatus);
+            Ressource.Status newStatus = Ressource.Status.valueOf(status.toUpperCase());
+            ressource.setStatus(newStatus);
             ressource.setDateDerniereModification(LocalDateTime.now());
             ressourceRepository.save(ressource);
-            return ResponseEntity.ok("Status mis à jour avec succès.");
+            return ResponseEntity.ok("Status updated successfully");
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Status invalide : " + status);
+            logger.error("Invalid status value: {}", status);
+            throw new InvalidStatusException("Invalid status: " + status);
         }
+    }
+
+    private void updateRessourceFields(Ressource existingRessource, Ressource ressource) {
+        if (ressource.getTitre() != null) existingRessource.setTitre(ressource.getTitre());
+        if (ressource.getDomaine() != null) existingRessource.setDomaine(ressource.getDomaine());
+        if (ressource.getDescriptionSimple() != null) existingRessource.setDescriptionSimple(ressource.getDescriptionSimple());
+        if (ressource.getDescriptionDetaillee() != null) existingRessource.setDescriptionDetaillee(ressource.getDescriptionDetaillee());
+        if (ressource.getAcces() != null) existingRessource.setAcces(ressource.getAcces());
+        if (ressource.getLien() != null) existingRessource.setLien(ressource.getLien());
+        if (ressource.getLimiteFeedBack() != 0) existingRessource.setLimiteFeedBack(ressource.getLimiteFeedBack());
     }
 }
