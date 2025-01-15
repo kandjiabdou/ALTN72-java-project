@@ -13,26 +13,31 @@ public class Ressource {
     private Long id;
 
     @NotBlank(message = "Le titre est obligatoire.")
+    @Column(length = 255)
     private String titre;
 
     @NotBlank(message = "Le domaine est obligatoire.")
+    @Column(length = 255)
     private String domaine;
 
     @NotBlank(message = "Une description simple est obligatoire.")
+    @Column(length = 2000)
     private String descriptionSimple;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", length = 3000)
     private String descriptionDetaillee;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", length = 200)
     private String acces;
 
     @NotBlank(message = "Le lien est obligatoire.")
+    @Column(length = 500)
     private String lien;
 
     private int limiteFeedBack = 5;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 50)
     private Status status = Status.PROPOSE;
 
     private LocalDateTime dateCreation = LocalDateTime.now();
