@@ -1,4 +1,4 @@
-package com.samboj.hopeproject.Config;
+package com.samboj.hopeproject.Utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

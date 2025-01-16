@@ -1,4 +1,4 @@
-package com.samboj.hopeproject.Config;
+package com.samboj.hopeproject.Utils;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

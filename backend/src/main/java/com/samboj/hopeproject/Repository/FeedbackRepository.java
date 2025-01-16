@@ -10,4 +10,3 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     List<Feedback> findByRessource(Ressource ressource);
     long countByRessource(Ressource ressource);
 }
-

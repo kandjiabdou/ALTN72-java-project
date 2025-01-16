@@ -1,6 +1,6 @@
 package com.samboj.hopeproject.Service;
 
-import com.samboj.hopeproject.Config.TokenConfig;
+import com.samboj.hopeproject.Utils.TokenConfig;
 import com.samboj.hopeproject.Exception.ErrorResponse;
 import com.samboj.hopeproject.Modele.Utilisateur;
 import com.samboj.hopeproject.Modele.UtilisateurDto;

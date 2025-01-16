@@ -1,9 +1,11 @@
 package com.samboj.hopeproject.Controleur;
 
-import com.samboj.hopeproject.HopeProjectApplication;
 import com.samboj.hopeproject.Modele.Feedback;
 import com.samboj.hopeproject.Service.FeedbackService;
+import com.samboj.hopeproject.Utils.DatabaseInitializer;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/ressources")
 @CrossOrigin(origins = "*")
 public class FeedbackController {
+    private final Logger LOGGER = LoggerFactory.getLogger(DatabaseInitializer.class);
 
     @Autowired
     private FeedbackService feedbackService;
 
     @GetMapping("/{id}/feedbacks")
     public ResponseEntity<Object> recupererFeedbacks(@PathVariable Long id) {
-        HopeProjectApplication.LOGGER.info("Récupération des feedbacks pour la ressource avec ID : {}", id);
+        LOGGER.info("Récupération des feedbacks pour la ressource avec ID : {}", id);
         return feedbackService.recupererFeedbacks(id);
     }
 
@@ -27,13 +30,13 @@ public class FeedbackController {
             @PathVariable Long id,
             @PathVariable Long utilisateurId,
             @Valid @RequestBody Feedback feedback) {
-        HopeProjectApplication.LOGGER.info("Ajout d'un feedback par l'utilisateur {} pour la ressource {}", utilisateurId, id);
+        LOGGER.info("Ajout d'un feedback par l'utilisateur {} pour la ressource {}", utilisateurId, id);
         return feedbackService.ajouterFeedback(id, utilisateurId, feedback);
     }
 
     @DeleteMapping("/feedback/{feedbackId}")
     public ResponseEntity<Object> supprimerFeedback(@PathVariable Long feedbackId) {
-        HopeProjectApplication.LOGGER.info("Suppression du feedback avec ID : {}", feedbackId);
+        LOGGER.info("Suppression du feedback avec ID : {}", feedbackId);
         return feedbackService.supprimerFeedback(feedbackId);
     }
 }
