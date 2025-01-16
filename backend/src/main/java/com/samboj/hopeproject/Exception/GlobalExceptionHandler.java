@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
@@ -54,19 +53,4 @@ public class GlobalExceptionHandler {
         response.put("message", message);
         return ResponseEntity.status(status).body(response);
     }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public static class RessourceNotFoundException extends RuntimeException {
-        public RessourceNotFoundException(String message) {
-            super(message);
-        }
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public static class InvalidStatusException extends RuntimeException {
-        public InvalidStatusException(String message) {
-            super(message);
-        }
-    }
-
 }

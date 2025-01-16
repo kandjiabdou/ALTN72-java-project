@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 
 import static com.samboj.hopeproject.Modele.Utilisateur.Role.*;
-
 @Component
 @Order(1)  // Assure que cet initializer s'exécute en premier
 public class DatabaseInitializer {
@@ -34,40 +33,49 @@ public class DatabaseInitializer {
     @PostConstruct
     public void initDatabase() {
         logger.info("Début de l'initialisation de la base de données...");
+
         try {
-            // Charger et lire le fichier Excel
-            InputStream inputStream = getClass().getResourceAsStream("/ressources.xlsx");
-            Workbook workbook = new XSSFWorkbook(inputStream);
-            Sheet sheet = workbook.getSheetAt(0);
+            // Vérifier si la table Ressource est déjà peuplée
+            if (ressourceRepository.count() == 0) {
+                logger.info("Insertion des données dans la table Ressource...");
 
-            for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue; // Ignorer la ligne d'entête
+                // Charger et lire le fichier Excel
+                InputStream inputStream = getClass().getResourceAsStream("/ressources.xlsx");
+                Workbook workbook = new XSSFWorkbook(inputStream);
+                Sheet sheet = workbook.getSheetAt(0);
 
-                Ressource ressource = new Ressource();
-                ressource.setTitre(getCellValue(row.getCell(0)));
-                ressource.setDomaine(getCellValue(row.getCell(1)));
-                ressource.setDescriptionSimple(getCellValue(row.getCell(2)));
-                ressource.setDescriptionDetaillee(getCellValue(row.getCell(3)));
-                ressource.setLien(getCellValue(row.getCell(4)));
-                ressource.setAcces(getCellValue(row.getCell(5)));
-                ressource.setDateCreation(LocalDateTime.now());
-                ressource.setDateDerniereModification(LocalDateTime.now());
-                ressource.setLimiteFeedBack(5);
-                ressource.setStatus(Ressource.Status.VALIDE);
+                for (Row row : sheet) {
+                    if (row.getRowNum() == 0) continue; // Ignorer la ligne d'entête
 
-                // Sauvegarder dans la base de données
-                ressourceRepository.save(ressource);
+                    Ressource ressource = new Ressource();
+                    ressource.setTitre(getCellValue(row.getCell(0)));
+                    ressource.setDomaine(getCellValue(row.getCell(1)));
+                    ressource.setDescriptionSimple(getCellValue(row.getCell(2)));
+                    ressource.setDescriptionDetaillee(getCellValue(row.getCell(3)));
+                    ressource.setLien(getCellValue(row.getCell(4)));
+                    ressource.setAcces(getCellValue(row.getCell(5)));
+                    ressource.setDateCreation(LocalDateTime.now());
+                    ressource.setDateDerniereModification(LocalDateTime.now());
+                    ressource.setLimiteFeedBack(5);
+                    ressource.setStatus(Ressource.Status.VALIDE);
+
+                    // Sauvegarder dans la base de données
+                    ressourceRepository.save(ressource);
+                }
+
+                workbook.close();
+                logger.info("Données insérées dans la table Ressource avec succès.");
+            } else {
+                logger.info("La table Ressource contient déjà des données, insertion ignorée.");
             }
-
-            workbook.close();
         } catch (Exception e) {
             logger.error("Erreur lors de l'initialisation de la base de données", e);
             throw new RuntimeException("Échec de l'initialisation de la base de données", e);
         }
-        logger.info("Initialisation de la base de données terminée avec succès");
 
         // Création des utilisateurs
         if (utilisateurRepository.count() == 0) { // Éviter de recréer si déjà existants
+            logger.info("Insertion des utilisateurs par défaut...");
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
             Utilisateur admin = new Utilisateur();
@@ -94,11 +102,16 @@ public class DatabaseInitializer {
             etudiant.setRole(ETUDIANT);
             utilisateurRepository.save(etudiant);
 
+            logger.info("Utilisateurs créés avec succès.");
             System.out.println("Utilisateurs créés avec succès :");
             System.out.println("ADMIN : admin123");
             System.out.println("PROF : prof123");
             System.out.println("ETUDIANT : etudiant123");
+        } else {
+            logger.info("Les utilisateurs par défaut existent déjà, insertion ignorée.");
         }
+
+        logger.info("Initialisation de la base de données terminée avec succès.");
     }
 
     private String getCellValue(Cell cell) {

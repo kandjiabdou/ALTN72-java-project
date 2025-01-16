@@ -1,6 +1,6 @@
 package com.samboj.hopeproject.Service;
 
-import com.samboj.hopeproject.Exception.GlobalExceptionHandler.*;
+import com.samboj.hopeproject.Exception.*;
 import com.samboj.hopeproject.Modele.Ressource;
 import com.samboj.hopeproject.Repository.RessourceRepository;
 import org.slf4j.Logger;
